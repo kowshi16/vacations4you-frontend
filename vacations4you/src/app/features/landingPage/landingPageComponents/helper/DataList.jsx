@@ -109,23 +109,23 @@ export const TestimonialTexts = {
     feedBacks: [
         {
             text: "You did a fabulous job. There were no hitches. Thank you again for all your work planning this trip.",
-            person: "Mike taylor",
-            location: "Lahore, Pakistan"
+            person: "Mike Taylor",
+            location: "California, USA"
         },
         {
             text: "Jadoo was great with the entire process from planning to updates during the trip. We had 11 people and everything was perfectly executed. We appreciate all of her hard work. It was truly the trip of a lifetime. Thank you!",
             person: "Gina",
-            location: "Owerri, Nigeria"
+            location: "Florida, USA"
         },
         {
             text: "Booking through you was very easy and made our lives so much easier. I have nothing bad to say! Thank you for giving us tips and guidance before we left on what to bring and such, that was very helpful!",
             person: "Emma",
-            location: "Vancouver, Canada"
+            location: "Texas, USA"
         },
         {
             text: "Thank you for your recommendation and putting the trip together. The resort was absolutely beautiful. The infinity pools, the palm trees in the main pool, the infinity pool in our preferred area overlooking the gulf and the golf course were exceptional....",
             person: "Loveth",
-            location: "Lagos, Nigeria"
+            location: "Kentucky, USA"
         },
     ]
 };
@@ -142,15 +142,15 @@ export const FooterTexts = {
         caption: "Quick Links",
         links: [
             {
-                name: "Destination",
+                name: "Cruise Packages",
                 url: "/"
             },
             {
-                name: "Hotels",
+                name: "Activity Packages",
                 url: "/"
             },
             {
-                name: "Flights",
+                name: "Hotel Packages",
                 url: "/"
             },
             {
