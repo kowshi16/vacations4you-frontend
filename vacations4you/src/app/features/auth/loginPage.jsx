@@ -1,42 +1,103 @@
 import React from 'react';
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
-    MDBInput
-} from 'mdb-react-ui-kit';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
 import aaImg from '../../../images/aaa.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        console.log({
+            email: data.get('email'),
+            password: data.get('password'),
+        });
+        navigate('/cruise');
+    };
+
     return (
-        <MDBContainer fluid>
-            <MDBRow>
-                <MDBCol sm='6'>
-                    <div className='d-flex flex-row ps-5 pt-5'>
-                        <MDBIcon fas icon="crow fa-3x me-3" style={{ color: '#709085' }} />
-                        <span className="h1 fw-bold mb-0">Logo</span>
-                    </div>
-
-                    <div className='d-flex flex-column justify-content-center h-custom-2 w-75 pt-4'>
-                        <h3 className="fw-normal mb-3 ps-5 pb-3" style={{ letterSpacing: '1px' }}>Log in</h3>
-                        <MDBInput wrapperClass='mb-4 mx-5 w-100' label='Email address' id='formControlLg' type='email' size="lg" />
-                        <MDBInput wrapperClass='mb-4 mx-5 w-100' label='Password' id='formControlLg' type='password' size="lg" />
-                        <MDBBtn className="mb-4 px-5 mx-5 w-100" color='info' size='lg'>Login</MDBBtn>
-                        <p className="small mb-5 pb-lg-3 ms-5"><a class="text-muted" href="#!">Forgot password?</a></p>
-                        <p className='ms-5'>Don't have an account? <a href="#!" class="link-info">Register here</a></p>
-                    </div>
-                </MDBCol>
-
-                <MDBCol sm='6' className='d-none d-sm-block px-0'>
-                    <img src={aaImg}
-                        alt="Login image" className="w-100" style={{ objectFit: 'cover', objectPosition: 'left' }} />
-                </MDBCol>
-
-            </MDBRow>
-
-        </MDBContainer>
+        <Grid container component="main" sx={{ height: '100vh' }}>
+            
+            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography component="h1" variant="h5">
+                        Login
+                    </Typography>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="#" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+            </Grid>
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={6}
+                sx={{
+                    backgroundImage: `url(${aaImg})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+        </Grid>
     );
 };
 

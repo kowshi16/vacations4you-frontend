@@ -2,6 +2,9 @@ import './App.css';
 import {Routes, Route} from "react-router-dom";
 import LoginPage from './app/features/auth/loginPage';
 import LandingPage from './app/features/landingPage/landingPage';
+import Cruise from './app/Pages/Cruise';
+import Activity from './app/Pages/Activity';
+import Package from './app/Pages/Package';
 
 function App() {
   return (
@@ -9,6 +12,9 @@ function App() {
       <Routes>
         <Route path='' element={<LandingPage />}></Route>
         <Route path='/login' element={<LoginPage />}></Route>
+        <Route exact path="/cruise" element={<Cruise />} />
+        <Route path="/activity" element={<Activity />} />
+        <Route path="/package" element={<Package />} />
       </Routes>
     </>
     

@@ -5,7 +5,6 @@ import GroupOfPlus from "../../../../images/landingPage/plusGroup.png";
 import { Card } from "../landingPageComponents/customComponents/Card";
 import { useCallback } from "react";
 import Icon1 from "../../../../images/landingPage/icon1.png";
-import Icon2 from "../../../../images/landingPage/icon2.png";
 import Icon3 from "../../../../images/landingPage/icon3.png";
 import Icon4 from "../../../../images/landingPage/icon4.png";
 import { Fade } from "react-awesome-reveal";
