@@ -7,7 +7,7 @@ export const NavButtons = [
     },
     {
         name: "Signup",
-        url: "/"
+        url: "/signup"
     }
 ];
 
