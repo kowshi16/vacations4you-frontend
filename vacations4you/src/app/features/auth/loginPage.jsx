@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import Button from '@mui/material/Button';
 import loginImg from '../../../images/login.jpg';
-import { useNavigate } from 'react-router-dom';
 import Logo from "../../../images/landingPage/vacations4ULogo.png";
 import { Image } from "../landingPage/landingPageComponents/customComponents/Image";
+import { Field, Form, Formik } from "formik";
+import * as yup from "yup";
+import {
+    Button,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Typography,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginPage = () => {
 
-    const navigate = useNavigate();
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-        navigate('/cruise');
+    const [showPassword, setShowPassword] = useState(false);
+    const initialValues = {
+        email: "",
+        password: "",
     };
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    console.log("Welcome");
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
-            
+            {/* <Loader open={loading} /> */}
             <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
                 <Box
                     sx={{
@@ -42,35 +46,95 @@ const LoginPage = () => {
                     <Typography component="h1" variant="h5">
                         Login
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                    <Box sx={{ mt: 1, width: '90%' }}>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={yup.object({
+                                email: yup
+                                    .string()
+                                    .matches(
+                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                        'Invalid Email'
+                                    )
+                                    .required('Please enter Email'),
+                                password: yup.string().required('Please enter Password'),
+                            })}
+                            onSubmit={(values) => {
+                                console.log('Form Values:', values);
+                                window.location.replace("/cruise");
+                            }}
                         >
-                            Login
-                        </Button>
+                            {({ errors, touched, dirty }) => (
+                                <Form>
+                                    <div>
+                                        <div>
+                                            <div>
+                                                <Field
+                                                    as={TextField}
+                                                    name="email"
+                                                    label="Email Address"
+                                                    id="email"
+                                                    type="email"
+                                                    size="small"
+                                                    fullWidth
+                                                    error={Boolean(errors.email) && touched.email}
+                                                    helperText={touched.email && errors.email}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className='mt-3'>
+                                                <Field
+                                                    as={TextField}
+                                                    name="password"
+                                                    id="password"
+                                                    fullWidth
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    size="small"
+                                                    label="Password"
+                                                    error={Boolean(errors.password) && touched.password}
+                                                    helperText={touched.password && errors.password}
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={handleClickShowPassword}
+                                                                    edge="end"
+                                                                    sx={{ color: '#0645A0' }}
+                                                                >
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <Button
+                                                    disabled={!dirty}
+                                                    sx={{
+                                                        width: '100%',
+                                                        backgroundColor: '#0645A0',
+                                                        marginTop: 2,
+                                                        fontWeight: 600,
+                                                        borderRadius: '5px',
+                                                        '&:hover': {
+                                                            backgroundColor: '#F3F4F6',
+                                                            color: 'black',
+                                                        },
+                                                    }}
+                                                    variant="contained"
+                                                    type="submit"
+                                                >
+                                                    Login
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
@@ -78,7 +142,7 @@ const LoginPage = () => {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
