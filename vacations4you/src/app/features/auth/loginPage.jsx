@@ -1,42 +1,170 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import loginImg from '../../../images/login.jpg';
+import Logo from "../../../images/landingPage/vacations4ULogo.png";
+import { Image } from "../landingPage/landingPageComponents/customComponents/Image";
+import { Field, Form, Formik } from "formik";
+import * as yup from "yup";
 import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
-    MDBInput
-} from 'mdb-react-ui-kit';
-import aaImg from '../../../images/aaa.jpg';
+    Button,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Typography,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginPage = () => {
+
+    const [showPassword, setShowPassword] = useState(false);
+    const initialValues = {
+        email: "",
+        password: "",
+    };
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    console.log("Welcome");
+
     return (
-        <MDBContainer fluid>
-            <MDBRow>
-                <MDBCol sm='6'>
-                    <div className='d-flex flex-row ps-5 pt-5'>
-                        <MDBIcon fas icon="crow fa-3x me-3" style={{ color: '#709085' }} />
-                        <span className="h1 fw-bold mb-0">Logo</span>
-                    </div>
-
-                    <div className='d-flex flex-column justify-content-center h-custom-2 w-75 pt-4'>
-                        <h3 className="fw-normal mb-3 ps-5 pb-3" style={{ letterSpacing: '1px' }}>Log in</h3>
-                        <MDBInput wrapperClass='mb-4 mx-5 w-100' label='Email address' id='formControlLg' type='email' size="lg" />
-                        <MDBInput wrapperClass='mb-4 mx-5 w-100' label='Password' id='formControlLg' type='password' size="lg" />
-                        <MDBBtn className="mb-4 px-5 mx-5 w-100" color='info' size='lg'>Login</MDBBtn>
-                        <p className="small mb-5 pb-lg-3 ms-5"><a class="text-muted" href="#!">Forgot password?</a></p>
-                        <p className='ms-5'>Don't have an account? <a href="#!" class="link-info">Register here</a></p>
-                    </div>
-                </MDBCol>
-
-                <MDBCol sm='6' className='d-none d-sm-block px-0'>
-                    <img src={aaImg}
-                        alt="Login image" className="w-100" style={{ objectFit: 'cover', objectPosition: 'left' }} />
-                </MDBCol>
-
-            </MDBRow>
-
-        </MDBContainer>
+        <Grid container component="main" sx={{ height: '100vh' }}>
+            {/* <Loader open={loading} /> */}
+            <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
+                <Box
+                    sx={{
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Image as="a" href="/" className="md:h-40 h-36" image={Logo} alt="Logo" />
+                    <Typography component="h1" variant="h5">
+                        Login
+                    </Typography>
+                    <Box sx={{ mt: 1, width: '90%' }}>
+                        <Formik
+                            initialValues={initialValues}
+                            validationSchema={yup.object({
+                                email: yup
+                                    .string()
+                                    .matches(
+                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                        'Invalid Email'
+                                    )
+                                    .required('Please enter Email'),
+                                password: yup.string().required('Please enter Password'),
+                            })}
+                            onSubmit={(values) => {
+                                console.log('Form Values:', values);
+                                window.location.replace("/cruise");
+                            }}
+                        >
+                            {({ errors, touched, dirty }) => (
+                                <Form>
+                                    <div>
+                                        <div>
+                                            <div>
+                                                <Field
+                                                    as={TextField}
+                                                    name="email"
+                                                    label="Email Address"
+                                                    id="email"
+                                                    type="email"
+                                                    size="small"
+                                                    fullWidth
+                                                    error={Boolean(errors.email) && touched.email}
+                                                    helperText={touched.email && errors.email}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className='mt-3'>
+                                                <Field
+                                                    as={TextField}
+                                                    name="password"
+                                                    id="password"
+                                                    fullWidth
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    size="small"
+                                                    label="Password"
+                                                    error={Boolean(errors.password) && touched.password}
+                                                    helperText={touched.password && errors.password}
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={handleClickShowPassword}
+                                                                    edge="end"
+                                                                    sx={{ color: '#0645A0' }}
+                                                                >
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <Button
+                                                    disabled={!dirty}
+                                                    sx={{
+                                                        width: '100%',
+                                                        backgroundColor: '#0645A0',
+                                                        marginTop: 2,
+                                                        fontWeight: 600,
+                                                        borderRadius: '5px',
+                                                        '&:hover': {
+                                                            backgroundColor: '#F3F4F6',
+                                                            color: 'black',
+                                                        },
+                                                    }}
+                                                    variant="contained"
+                                                    type="submit"
+                                                >
+                                                    Login
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link href="/signup" variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+            </Grid>
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={6}
+                sx={{
+                    backgroundImage: `url(${loginImg})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+        </Grid>
     );
 };
 
