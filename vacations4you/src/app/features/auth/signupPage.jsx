@@ -4,7 +4,6 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import signupImg from '../../../images/signup.jpg';
-import { useNavigate } from 'react-router-dom';
 import Logo from "../../../images/landingPage/vacations4ULogo.png";
 import { Image } from "../landingPage/landingPageComponents/customComponents/Image";
 import { Field, Form, Formik } from "formik";
@@ -18,6 +17,9 @@ import {
     Typography,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { signupAPI } from '../../../api/auth';
 
 const roleList = [
     { value: "Backoffice Staff", label: "Backoffice Staff" },
@@ -29,7 +31,17 @@ const SignupPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    const navigate = useNavigate();
+    const [showAlert, setShowAlert] = useState({
+        status: false,
+        label: "",
+        type: ""
+    });
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'right',
+    });
+    const { vertical, horizontal } = state;
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowConfirmPassword = () =>
@@ -73,8 +85,38 @@ const SignupPage = () => {
             .required("Please enter the Confirm Password"),
     });
 
+    const handleSignup = (values) => {
+        signupAPI(values)
+            .then((res) => {
+                console.log("Login :", res);
+                setShowAlert({ ...showAlert, status: true, label: "Registration successfull ! Login to continue.", type: "success" });
+                setTimeout(() => {
+                    window.location.replace("/login");
+                }, 3000);
+
+            })
+            .catch((error) => {
+                console.log("Error >>>>>>>>>>>", error);
+                setShowAlert({ ...showAlert, status: true, label: error?.response?.data?.message, type: "error" });
+                setTimeout(() => {
+                    typeof window !== undefined && window.location.reload()
+                }, 3000);
+            });
+    };
+
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
+            {showAlert.status === true && (
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={showAlert.status}
+                    key={vertical + horizontal}
+                >
+                    <Alert variant="filled" severity={showAlert.type}>
+                        {showAlert.label}
+                    </Alert>
+                </Snackbar>
+            )}
 
             <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
                 <Box
@@ -94,8 +136,14 @@ const SignupPage = () => {
                         <Formik
                             initialValues={initialValues}
                             onSubmit={(values, formikHelpers) => {
-                                console.log("values >>>>>>>>", values);
-                                window.location.replace("/login");
+                                handleSignup(({
+                                    name: values.name,
+                                    email: values.email,
+                                    password: values.confirmPassword,
+                                    user_role: values.userRole.value
+                                }));
+                                //console.log("values >>>>>>>>", values);
+                                //window.location.replace("/login");
                                 //formikHelpers.resetForm();
                             }}
                             validationSchema={formValidation}
