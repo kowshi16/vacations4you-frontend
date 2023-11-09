@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -16,6 +16,10 @@ import {
     Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { loginAPI } from '../../../api/auth';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 const LoginPage = () => {
 
@@ -24,14 +28,53 @@ const LoginPage = () => {
         email: "",
         password: "",
     };
+    const [showAlert, setShowAlert] = useState({
+        status: false,
+        label: "",
+        type: ""
+    });
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'right',
+    });
+    const { vertical, horizontal } = state;
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    console.log("Welcome");
+    const handleLogin = (values) => {
+        loginAPI(values)
+            .then((res) => {
+                console.log("Login :", res);
+                setShowAlert({ ...showAlert, status: true, label: "Log in successfull !", type: "success" });
+                setTimeout(() => {
+                    window.location.replace("/cruise");
+                }, 3000);
+
+            })
+            .catch((error) => {
+                console.log("Error >>>>>>>>>>>", error);
+                setShowAlert({ ...showAlert, status: true, label: error?.response?.data?.message, type: "error" });
+                setTimeout(() => {
+                    typeof window !== undefined && window.location.reload()
+                }, 3000);
+            });
+    };
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
-            {/* <Loader open={loading} /> */}
+            {showAlert.status === true && (
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={showAlert.status}
+                    key={vertical + horizontal}
+                >
+                    <Alert variant="filled" severity={showAlert.type}>
+                        {showAlert.label}
+                    </Alert>
+                </Snackbar>
+            )}
+
             <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square>
                 <Box
                     sx={{
@@ -60,8 +103,9 @@ const LoginPage = () => {
                                 password: yup.string().required('Please enter Password'),
                             })}
                             onSubmit={(values) => {
-                                console.log('Form Values:', values);
-                                window.location.replace("/cruise");
+                                handleLogin(values);
+                                //console.log('Form Values:', values);
+                                //window.location.replace("/cruise");
                             }}
                         >
                             {({ errors, touched, dirty }) => (
