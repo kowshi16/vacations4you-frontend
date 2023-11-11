@@ -1,6 +1,6 @@
 import React from "react";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import "../style/ratingStars.css";
+import "../styles/ratingStars.css";
 
 function RatingStars({ rating }) {
   const filledStars = Math.floor(rating);
@@ -39,6 +39,5 @@ function RatingStars({ rating }) {
     </div>
   );
 }
-
 
 export default RatingStars;
