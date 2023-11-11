@@ -2,10 +2,11 @@
   /* background-color: #060b26; */
   background-color: white;
   /* height: 80px; */
-  height: 60px;
+  height: 40px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  box-shadow:none !important;
 }
 
 .menu-bars {
@@ -16,7 +17,7 @@
 
 .nav-menu {
   background-color: #060b26;
- 
+
   width: 250px;
   height: 100vh;
   display: flex;
@@ -56,7 +57,6 @@
 }
 
 .nav-text a:hover {
-  /* background-color: #1a83ff; */
   background-color: #f5f5f5;
   color: #060b26;
 }
@@ -77,4 +77,13 @@
 
 span {
   margin-left: 16px;
+}
+
+.changeColor {
+  color: white;
+  fill: "#fff";
+}
+.changeColor:hover {
+  color: var(--main-color) !important;
+  fill: var(--main-color) !important;
 }

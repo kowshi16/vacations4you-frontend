@@ -1,4 +1,5 @@
 :root {
+  /* --main-color: #00008B; */
   --main-color: #060b26;
   --text-color: #232323;
   --secondary-color: #112154;
@@ -14,8 +15,7 @@
 
 
 .checkout-btn {
-  background-color: red;
-  /* background-color: var(--main-color); */
+  background-color: var(--main-color);
   padding: 10px 20px;
   font-size: 1rem;
   color: #fff;

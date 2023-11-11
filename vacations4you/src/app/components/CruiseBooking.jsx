@@ -387,7 +387,7 @@ export default function CruiseBooking() {
           sx={{ marginTop: 5, marginBottom: 5 }}
         >
           <Grid item sm={3}>
-            <Button fullWidth variant="contained">
+            <Button fullWidth style={{background: "var(--main-color)", color: "#fff"}}>
               Checkout
             </Button>
           </Grid>

@@ -1,6 +1,6 @@
 :root {
-  /* --main-color: #060b26; */
-  --main-color: #00008B;
+  --main-color: #060b26;
+  /* --main-color: #00008b; */
   --text-color: #232323;
   --secondary-color: #112154;
 }
@@ -12,9 +12,11 @@
 
 .navbar-cart {
   flex-basis: 100%;
-  padding: 15px 2rem;
+  padding-bottom: 20px ;
+  padding-right: 20px ;
   display: flex;
   justify-content: flex-end;
+  overflow: hidden;
 }
 
 /* .navbar-cart {
@@ -119,7 +121,7 @@ main {
   opacity: 1;
 }
 
-.buttons .btn {
+.buttons .button {
   margin-right: 1rem;
   background-color: #dddddd;
   padding: 10px 20px;
@@ -128,7 +130,7 @@ main {
   border-radius: 3px;
 }
 
-.buttons .btn:hover {
+.buttons .button:hover {
   background-color: var(--main-color);
   color: #fff;
 }
@@ -169,10 +171,10 @@ main {
 }
 
 .second-filter {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-left: 20px;
   /* height: 600px; */
-  border: 2px solid rgb(6, 30, 109);
+  /* border: 2px solid rgb(6, 30, 109); */
   border-radius: 5%;
 }
 

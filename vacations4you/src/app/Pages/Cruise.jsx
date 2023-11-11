@@ -22,6 +22,7 @@ import moment from "moment";
 import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
+import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 
 
 function Cruise() {
@@ -228,10 +229,29 @@ function Cruise() {
         </button>
       </div>
 
-      <div className="cruise-div">
-        <Card>
-          <Grid container className="cruise-card">
-            <Grid item xs={3} sx={{ margin: "0 5px" }}>
+      <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        <Card style={{ padding: 20 }}>
+          <Grid
+            container
+            alignItems="center"
+            style={{ borderBottom: "1px solid #000" }}
+          >
+            <Grid item sm={12}>
+              <label style={{ fontSize: 15 }}>
+                {" "}
+                <SearchSharpIcon fontSize="small" /> Cruise Search
+              </label>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            style={{ marginTop: 5 }}
+            spacing={2}
+          >
+            <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
                 <DateRangePicker
                   onChange={(newDates) => {
@@ -245,7 +265,7 @@ function Cruise() {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3} sx={{ margin: "0 5px" }}>
+            <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Departure</InputLabel>
                 <Select
@@ -262,7 +282,7 @@ function Cruise() {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3} sx={{ margin: "0 5px" }}>
+            <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Arrival</InputLabel>
                 <Select
@@ -279,7 +299,7 @@ function Cruise() {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3} sx={{ margin: "0px 10px 0px 10px" }}>
+            <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Cabin</InputLabel>
                 <Select
@@ -296,7 +316,7 @@ function Cruise() {
               </FormControl>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Deck</InputLabel>
                 <Select
@@ -313,20 +333,31 @@ function Cruise() {
               </FormControl>
             </Grid>
 
-            <Grid item xs={1} sx={{ margin: "0 10px 0 20px" }}>
-              <Button fullWidth variant="contained" onClick={getCruiseBySearch}>
+            <Grid item sm={3} style={{ marginTop: 5 }}>
+              <Button
+                fullWidth
+                onClick={getCruiseBySearch}
+                style={{ background: "var(--main-color)", color: "#fff" }}
+              >
                 Search
               </Button>
             </Grid>
 
-            <Grid item xs={1}>
-              <Button fullWidth variant="outlined" onClick={handleClearClick}>
+            <Grid item sm={3} style={{ marginTop: 5 }}>
+              <Button
+                fullWidth
+                style={{
+                  border: "1px solid var(--main-color)",
+                  color: "var(--main-color)",
+                }}
+                onClick={handleClearClick}
+              >
                 Clear
               </Button>
             </Grid>
           </Grid>
         </Card>
-      </div>
+      </Grid>
 
       <Grid container spacing={2} style={{ marginTop: 40 }}>
         <Grid item xs={3}>
@@ -431,7 +462,7 @@ function Cruise() {
 
         <Grid item xs={9}>
           <main>
-            <h2 className="title">Available Cruise Packages</h2>
+            {/* <h2 className="title">Available Cruise Packages</h2> */}
             <div className="cruises">
               {newCruiseDetails.length > 0 ? (
                 newCruiseDetails.map((cruise) => (
@@ -485,7 +516,7 @@ function Cruise() {
                     <span className="cruise-price">{cruise.price}$</span>
                     <div className="buttons">
                       <button
-                        className="btn"
+                        className="button"
                         onClick={() => addCruiseToCart(cruise)}
                       >
                         Add to cart

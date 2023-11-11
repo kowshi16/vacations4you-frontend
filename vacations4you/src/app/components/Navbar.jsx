@@ -6,7 +6,6 @@ import { SidebarData } from "./SidebarData";
 import "../styles/navbar.css";
 import { IconContext } from "react-icons";
 
-
 function NavBar() {
   const [sidebar, setSidebar] = useState(false);
 
@@ -24,7 +23,7 @@ function NavBar() {
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
               <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
+                <AiIcons.AiOutlineClose style={{ color: "#fff" }} />
               </Link>
             </li>
             {SidebarData.map((item, index) => {
@@ -45,4 +44,3 @@ function NavBar() {
 }
 
 export default NavBar;
-
