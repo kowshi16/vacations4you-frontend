@@ -1,5 +1,6 @@
 :root {
-  --main-color: #060b26;
+  /* --main-color: #060b26; */
+  --main-color: #00008B;
   --text-color: #232323;
   --secondary-color: #112154;
 }
@@ -21,7 +22,7 @@
   text-transform: uppercase;
 } */
 
-.btn {
+.button {
   border: none;
   outline: none;
   background: transparent;

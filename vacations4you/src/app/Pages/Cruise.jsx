@@ -24,20 +24,34 @@ import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 
+import axios from "axios";
+
+const apiUrl = "http://localhost:5000/api/cruise";
+
 function Cruise() {
+  const [cartsVisibility, setCartVisible] = useState(false);
+
+  const [cruisesInCart, setCruise] = useState(
+    JSON.parse(localStorage.getItem("shopping-cart")) || []
+  );
+
   const [departure, setDeparture] = useState("");
   const [arrival, setArrival] = useState("");
   const [cabin, setCabin] = useState("");
   const [deck, setDeck] = useState("");
   const [departure_date, setDepartureDate] = useState(null);
   const [arrival_date, setArrivalDate] = useState(null);
+
+  const [cruiseDetails, setCruiseDetails] = useState([]);
+  const [newCruiseDetails, setNewCruiseDetails] = useState([cruiseDetails]);
+
   const [duration, setDuration] = useState("");
   const [cruise_provider, setCruiseProvider] = useState("");
+  const [price, setValuePrice] = useState("");
 
-  const [value, setValue] = useState("");
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const handleChangePrice = (event) => {
+    setValuePrice(event.target.value);
+    filterCruise(event.target.value);
   };
 
   const handleChangeDeparture = (event) => {
@@ -64,11 +78,6 @@ function Cruise() {
     setCruiseProvider(event.target.value);
   };
 
-  const [cartsVisibility, setCartVisible] = useState(false);
-
-  const [cruisesInCart, setCruise] = useState(
-    JSON.parse(localStorage.getItem("shopping-cart")) || []
-  );
   useEffect(() => {
     localStorage.setItem("shopping-cart", JSON.stringify(cruisesInCart));
   }, [cruisesInCart]);
@@ -79,27 +88,23 @@ function Cruise() {
     cabin: cabin,
     departure: departure,
     arrival: arrival,
-    departure_date: departure_date
-      ? new Date(departure_date).toISOString().split("T")[0]
-      : "",
-    arrival_date: arrival_date
-      ? new Date(arrival_date).toISOString().split("T")[0]
-      : "",
+    departure_date: moment(departure_date).format("YYYY-MM-DD"),
+    arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
+
+      
+    // departure_date: departure_date
+    //   ? new Date(departure_date).toLocaleDateString().split("T")[0]
+    //   : "",
+    // arrival_date: arrival_date
+    //   ? new Date(arrival_date).toLocaleDateString().split("T")[0]
+    //   : "",
   };
 
+  console.log('queryParams', queryParams)
   const addCruiseToCart = (cruise) => {
     const newCruise = {
       ...cruise,
       count: 1,
-
-      // provider:cruise.name,
-      // cabin: cruise.cabin,
-      // deck: cruise.deck,
-      // departure: cruise.departure,
-      // arrival: cruise.arrival,
-      // duration: cruise.duration,
-      // arrivalDate: cruise.arrival_date,
-      // departureDate: cruise.departure_date,
     };
 
     setCruise([...cruisesInCart, newCruise]);
@@ -108,18 +113,15 @@ function Cruise() {
     setCruise(updatedCart);
 
     localStorage.setItem("shopping-cart", JSON.stringify(updatedCart));
-
-    //window.location.href = "/cruise-booking";
   };
 
   //Get all cruise
-  const [cruiseDetails, setCruiseDetails] = useState([]);
-
   const fetchAllCruise = () => {
     getAllCruiseAPI()
       .then((res) => {
         console.log("Res :", res);
         setCruiseDetails(res.data);
+        setNewCruiseDetails(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -154,15 +156,78 @@ function Cruise() {
   };
 
   //Get Cruise data by search criteria
-  const getCruiseBySearch = () => {
-    getCruiseByFiltersAPI(queryParams)
-      .then((res) => {
-        console.log("Search Cruise Records :", res);
-        setCruiseDetails(res?.data?.records);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // const getCruiseBySearch = () => {
+  //   getCruiseByFiltersAPI(queryParams)
+  //     .then((res) => {
+  //       console.log("Search Cruise Records :", res);
+  //       setCruiseDetails(res?.data?.records);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  const getCruiseBySearch = async () => {
+    try {
+      const data = await axios.get(apiUrl, { params: queryParams });
+      setCruiseDetails(data.data);
+      setNewCruiseDetails(data.data);
+    } catch (error) {
+      setCruiseDetails([]);
+      setNewCruiseDetails([]);
+
+      if (error.response) {
+        console.log(
+          "Server responded with a non-2xx status:",
+          error.response.status
+        );
+        console.log("Response data:", error.response.data);
+      } else if (error.request) {
+        console.log("No response received. Error:", error.request);
+      } else {
+        console.log("Request setup error:", error.message);
+      }
+    }
+  };
+
+  // Filter Cruise
+  const filterCruise = (value) => {
+    if (cruiseDetails.length <= 0) {
+      fetchAllCruise();
+    }
+    if (value === "") {
+      setNewCruiseDetails(cruiseDetails);
+    } else if (value === "500") {
+      console.log(value);
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.price >= 500 && newValue.price <= 1000
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "1001") {
+      console.log(value);
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.price >= 1001 && newValue.price <= 2000
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "2001") {
+      console.log(value);
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.price >= 2001 && newValue.price <= 3000
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "3001") {
+      console.log(value);
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.price >= 3001 && newValue.price <= 4000
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "4001") {
+      console.log(value);
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.price >= 4001
+      );
+      setNewCruiseDetails(filteredCruise);
+    }
   };
 
   const handleClearClick = () => {
@@ -188,7 +253,7 @@ function Cruise() {
       />
       <div className="navbar-cart">
         <button
-          className="btn cruise-cart-btn"
+          className="button cruise-cart-btn"
           onClick={() => setCartVisible(true)}
         >
           <FaShoppingCart size={24} />
@@ -201,6 +266,9 @@ function Cruise() {
       <div className="cruise-div">
         <Card>
           <Grid container className="cruise-card">
+
+         
+            
             <Grid item xs={3} sx={{ margin: "0 5px" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Departure</InputLabel>
@@ -241,10 +309,8 @@ function Cruise() {
                   onChange={(newDates) => {
                     if (newDates && newDates.length === 2) {
                       const [start, end] = newDates;
-                      // setDepartureDate(start.toJSON());
-                      // setArrivalDate(end.toJSON());
-                      setDepartureDate(start.toISOString());
-                      setArrivalDate(end.toISOString());
+                      setDepartureDate(start.toLocaleDateString());
+                      setArrivalDate(end.toLocaleDateString());
                     }
                   }}
                 />
@@ -304,57 +370,49 @@ function Cruise() {
         <Grid item xs={3}>
           <Card className="second-filter">
             <Grid container style={{ marginTop: 40 }}>
-              {/* <Grid item xs={12} style={{ marginLeft: 16 }}>
-                <label className="title">Price</label>
-              </Grid> */}
-
               <Grid item xs={10}>
-                {/* <Slider
-                  defaultValue={50}
-                  aria-label="Default"
-                  valueLabelDis
-                  play="auto"
-                /> */}
-
                 <FormLabel
                   id="demo-controlled-radio-buttons-group"
                   style={{ marginLeft: 16 }}
                 >
                   Price
                 </FormLabel>
+
                 <RadioGroup
                   aria-labelledby="demo-controlled-radio-buttons-group"
                   name="controlled-radio-buttons-group"
-                  value={value}
-                  onChange={handleChange}
+                  value={price}
+                  onChange={handleChangePrice}
                 >
+                  <FormControlLabel value="" control={<Radio />} label="All" />
+
                   <FormControlLabel
-                    value="1"
+                    value="500"
                     control={<Radio />}
-                    label="500 To 1000"
+                    label="$ 500 To 1000"
                   />
                   <FormControlLabel
-                    value="2"
+                    value="1001"
                     control={<Radio />}
-                    label="1001 To 2000"
+                    label="$ 1001 To 2000"
                   />
 
                   <FormControlLabel
-                    value="3"
+                    value="2001"
                     control={<Radio />}
-                    label="2001 To 3000"
+                    label="$ 2001 To 3000"
                   />
 
                   <FormControlLabel
-                    value="4"
+                    value="3001"
                     control={<Radio />}
-                    label="3001 To 4000"
+                    label="$ 3001 To 4000"
                   />
 
                   <FormControlLabel
-                    value="5"
+                    value="4001"
                     control={<Radio />}
-                    label="4001 and more"
+                    label="$ 4001 and more"
                   />
                 </RadioGroup>
               </Grid>
@@ -413,8 +471,8 @@ function Cruise() {
           <main>
             <h2 className="title">Available Cruise Packages</h2>
             <div className="cruises">
-              {cruiseDetails.length > 0 ? (
-                cruiseDetails.map((cruise) => (
+              {newCruiseDetails.length > 0 ? (
+                newCruiseDetails.map((cruise) => (
                   <div className="cruise" key={cruise._id}>
                     <img
                       className="cruise-image"
@@ -451,18 +509,12 @@ function Cruise() {
                       <strong>Provider - </strong>
                       {cruise.cruise_provider}
                     </p>
-                    {/* <p>
-      <strong>Arrival Date - </strong>
-      {cruise.arrival_date}
-    </p> */}
+               
                     <p>
                       <strong>Arrival Date - </strong>
                       {moment(cruise.arrival_date).format("YYYY-MM-DD")}
                     </p>
-                    {/* <p>
-      <strong>Departure Date - </strong>
-      {cruise.departure_date}
-    </p> */}
+     
                     <p>
                       <strong>Departure Date - </strong>
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}

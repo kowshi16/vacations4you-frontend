@@ -21,7 +21,7 @@ function CruiseCart({
       <div className="shoppingCart">
         <div className="header">
           <h2>Cruise Booking Cart</h2>
-          <button className="btn close-btn" onClick={onClose}>
+          <button className="button close-btn" onClick={onClose}>
             <AiFillCloseCircle size={30} />
           </button>
         </div>
@@ -56,7 +56,7 @@ function CruiseCart({
                 })}
               </select>
               <button
-                className="btn remove-btn"
+                className="button remove-btn"
                 onClick={() => onCruiseRemove(cruise)}
               >
                 <RiDeleteBin6Line size={20} />
@@ -64,7 +64,7 @@ function CruiseCart({
             </div>
           ))}
           {cruises.length > 0 && (
-            <Link to="/cruise-booking" className="btn checkout-btn">
+            <Link to="/cruise-booking" className="button checkout-btn">
               Proceed to checkout
             </Link>
           

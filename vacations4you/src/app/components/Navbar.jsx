@@ -5,8 +5,7 @@ import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
 import "../styles/navbar.css";
 import { IconContext } from "react-icons";
-import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
+
 
 function NavBar() {
   const [sidebar, setSidebar] = useState(false);
@@ -14,7 +13,7 @@ function NavBar() {
   const showSidebar = () => setSidebar(!sidebar);
   return (
     <>
-      <IconContext.Provider value={{ color: "#fff" }}>
+      <IconContext.Provider value={{ color: "#060b26" }}>
         <div className="navbar">
           <Link to="#" className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar} />
