@@ -11,7 +11,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  // Slider,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -24,9 +23,6 @@ import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 
-import axios from "axios";
-
-const apiUrl = "http://localhost:5000/api/cruise";
 
 function Cruise() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -90,17 +86,9 @@ function Cruise() {
     arrival: arrival,
     departure_date: moment(departure_date).format("YYYY-MM-DD"),
     arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
-
-      
-    // departure_date: departure_date
-    //   ? new Date(departure_date).toLocaleDateString().split("T")[0]
-    //   : "",
-    // arrival_date: arrival_date
-    //   ? new Date(arrival_date).toLocaleDateString().split("T")[0]
-    //   : "",
   };
 
-  console.log('queryParams', queryParams)
+  console.log("queryParams", queryParams);
   const addCruiseToCart = (cruise) => {
     const newCruise = {
       ...cruise,
@@ -156,38 +144,15 @@ function Cruise() {
   };
 
   //Get Cruise data by search criteria
-  // const getCruiseBySearch = () => {
-  //   getCruiseByFiltersAPI(queryParams)
-  //     .then((res) => {
-  //       console.log("Search Cruise Records :", res);
-  //       setCruiseDetails(res?.data?.records);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  const getCruiseBySearch = async () => {
-    try {
-      const data = await axios.get(apiUrl, { params: queryParams });
-      setCruiseDetails(data.data);
-      setNewCruiseDetails(data.data);
-    } catch (error) {
-      setCruiseDetails([]);
-      setNewCruiseDetails([]);
-
-      if (error.response) {
-        console.log(
-          "Server responded with a non-2xx status:",
-          error.response.status
-        );
-        console.log("Response data:", error.response.data);
-      } else if (error.request) {
-        console.log("No response received. Error:", error.request);
-      } else {
-        console.log("Request setup error:", error.message);
-      }
-    }
+  const getCruiseBySearch = () => {
+    getCruiseByFiltersAPI(queryParams)
+      .then((res) => {
+        setCruiseDetails(res.data);
+        setNewCruiseDetails(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // Filter Cruise
@@ -266,9 +231,20 @@ function Cruise() {
       <div className="cruise-div">
         <Card>
           <Grid container className="cruise-card">
+            <Grid item xs={3} sx={{ margin: "0 5px" }}>
+              <FormControl fullWidth>
+                <DateRangePicker
+                  onChange={(newDates) => {
+                    if (newDates && newDates.length === 2) {
+                      const [start, end] = newDates;
+                      setDepartureDate(start.toLocaleDateString());
+                      setArrivalDate(end.toLocaleDateString());
+                    }
+                  }}
+                />
+              </FormControl>
+            </Grid>
 
-         
-            
             <Grid item xs={3} sx={{ margin: "0 5px" }}>
               <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Departure</InputLabel>
@@ -300,20 +276,6 @@ function Cruise() {
                   <MenuItem value="Hambantota">Hambantota</MenuItem>
                   <MenuItem value="Germany">Germany</MenuItem>
                 </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={3} sx={{ margin: "0 5px" }}>
-              <FormControl fullWidth>
-                <DateRangePicker
-                  onChange={(newDates) => {
-                    if (newDates && newDates.length === 2) {
-                      const [start, end] = newDates;
-                      setDepartureDate(start.toLocaleDateString());
-                      setArrivalDate(end.toLocaleDateString());
-                    }
-                  }}
-                />
               </FormControl>
             </Grid>
 
@@ -509,12 +471,12 @@ function Cruise() {
                       <strong>Provider - </strong>
                       {cruise.cruise_provider}
                     </p>
-               
+
                     <p>
                       <strong>Arrival Date - </strong>
                       {moment(cruise.arrival_date).format("YYYY-MM-DD")}
                     </p>
-     
+
                     <p>
                       <strong>Departure Date - </strong>
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
