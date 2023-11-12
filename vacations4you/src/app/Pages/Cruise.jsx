@@ -18,15 +18,11 @@ import {
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import moment from "moment";
-import {
-  getAllCruiseAPI,
-  getCruiseByFiltersAPI,
-} from "../../api/cruise";
+import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FilterListSharpIcon from "@mui/icons-material/FilterListSharp";
-
 
 function Cruise() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -206,7 +202,6 @@ function Cruise() {
         console.log(error);
       });
   };
-
 
   // Filter Cruise
   const filterCruise = (value) => {
@@ -441,7 +436,7 @@ function Cruise() {
                 style={{
                   border: "1px solid var(--main-color)",
                   color: "var(--main-color)",
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
                 onClick={handleClearClick}
               >
