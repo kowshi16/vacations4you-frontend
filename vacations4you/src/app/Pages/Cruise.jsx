@@ -151,6 +151,7 @@ function Cruise() {
         setNewCruiseDetails(res.data);
       })
       .catch((error) => {
+        setNewCruiseDetails([]);
         console.log(error);
       });
   };
@@ -483,8 +484,7 @@ function Cruise() {
                       {cruise.deck}
                     </Grid>
                     <Grid item xs={12}>
-                      <strong>Price - </strong>
-                      $ {cruise.price}
+                      <strong>Price - </strong>$ {cruise.price}
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Arrival - </strong>
