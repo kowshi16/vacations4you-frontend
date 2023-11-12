@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
 import "../styles/cruiseBooking.css";
 import {
   Card,
@@ -33,8 +32,6 @@ function subtotal(items) {
 }
 
 export default function CruiseBooking() {
-  const { control, handleSubmit } = useForm();
-
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
@@ -321,9 +318,7 @@ export default function CruiseBooking() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    // value={meal_preference}
                     label="Meal Preferences"
-                    // onChange={handleChangeMeal}
                     value={formData.meal_preference}
                     onChange={(e) =>
                       setFormData({
@@ -344,9 +339,7 @@ export default function CruiseBooking() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    // value={pack}
                     label="Packs"
-                    // onChange={handleChangePack}
                     value={formData.number_of_participants}
                     onChange={(e) =>
                       setFormData({
@@ -389,131 +382,77 @@ export default function CruiseBooking() {
               </Grid>
             </Grid>
 
-            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
             <Grid container spacing={2} style={{ marginTop: 1 }}>
               <Grid item sm={6}>
-                <Controller
-                  name="cardNumber"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "Card number is required" }}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="Card Number"
-                      variant="outlined"
-                      fullWidth
-                      onInput={(e) => {
-                        e.target.value = e.target.value
-                          .replace(/\D/g, "")
-                          .slice(0, 16);
-                      }}
-                      error={Boolean(fieldState.error)}
-                      helperText={
-                        fieldState.error ? fieldState.error.message : null
-                      }
-                      {...field}
-                      value={formData.card_number}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          card_number: e.target.value,
-                        })
-                      }
-                    />
-                  )}
+                <TextField
+                  label="Card Number"
+                  variant="outlined"
+                  fullWidth
+                  onInput={(e) => {
+                    e.target.value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 16);
+                  }}
+                  value={formData.card_number}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      card_number: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item sm={6}>
-                <Controller
-                  name="expiryDate"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "Expiry date is required" }}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="Expiry Date"
-                      variant="outlined"
-                      fullWidth
-                      placeholder="YYYY-MM-DD"
-                      onInput={formatDate}
-                      error={Boolean(fieldState.error)}
-                      helperText={
-                        fieldState.error ? fieldState.error.message : null
-                      }
-                      {...field}
-                      value={formData.expiry_date}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          expiry_date: e.target.value,
-                        })
-                      }
-                    />
-                  )}
+                <TextField
+                  label="Expiry Date"
+                  variant="outlined"
+                  fullWidth
+                  placeholder="YYYY-MM-DD"
+                  onInput={formatDate}
+                  value={formData.expiry_date}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      expiry_date: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item sm={6}>
-                <Controller
-                  name="cvv"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "CVV is required" }}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="CVV"
-                      variant="outlined"
-                      fullWidth
-                      error={Boolean(fieldState.error)}
-                      helperText={
-                        fieldState.error ? fieldState.error.message : null
-                      }
-                      {...field}
-                      onInput={(e) => {
-                        e.target.value = e.target.value
-                          .replace(/\D/g, "")
-                          .slice(0, 3);
-                      }}
-                      value={formData.cvv}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          cvv: e.target.value,
-                        })
-                      }
-                    />
-                  )}
+                <TextField
+                  label="CVV"
+                  variant="outlined"
+                  fullWidth
+                  onInput={(e) => {
+                    e.target.value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 3);
+                  }}
+                  value={formData.cvv}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      cvv: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item sm={6}>
-                <Controller
-                  name="nameOnCard"
-                  control={control}
-                  defaultValue=""
-                  rules={{ required: "Name on card is required" }}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="Name on Card"
-                      variant="outlined"
-                      fullWidth
-                      onInput={onlyLetters}
-                      error={Boolean(fieldState.error)}
-                      helperText={
-                        fieldState.error ? fieldState.error.message : null
-                      }
-                      {...field}
-                      value={formData.name_on_card}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          name_on_card: e.target.value,
-                        })
-                      }
-                    />
-                  )}
+                <TextField
+                  label="Name on Card"
+                  variant="outlined"
+                  fullWidth
+                  onInput={onlyLetters}
+                  value={formData.name_on_card}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      name_on_card: e.target.value,
+                    })
+                  }
                 />
               </Grid>
             </Grid>
-            {/* </form> */}
           </Card>
         </Grid>
 
