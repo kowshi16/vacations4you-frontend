@@ -18,7 +18,11 @@ import {
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import moment from "moment";
-import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
+import {
+  getAllCruiseAPI,
+  getCruiseByFiltersAPI,
+  saveCruiseBookingAPI,
+} from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
@@ -128,12 +132,14 @@ function Cruise() {
 
   //Set cruise data by search criteria
   const queryParams = {
-    deck: deck,
-    cabin: cabin,
-    departure: departure,
-    arrival: arrival,
-    departure_date: moment(departure_date).format("YYYY-MM-DD"),
-    arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
+    deck: deck ? deck : "",
+    cabin: cabin ? cabin : "",
+    departure: departure ? departure : "",
+    arrival: arrival ? arrival : "",
+    departure_date: departure_date
+      ? moment(departure_date).format("YYYY-MM-DD")
+      : "",
+    arrival_date: arrival_date ? moment(arrival_date).format("YYYY-MM-DD") : "",
   };
 
   const addCruiseToCart = (cruise) => {
@@ -163,7 +169,7 @@ function Cruise() {
       });
   };
 
-  // Get all cruise - new method
+  // Get all cruise
   useEffect(() => {
     fetchAllCruise();
   }, []);
@@ -194,11 +200,21 @@ function Cruise() {
   const getCruiseBySearch = () => {
     getCruiseByFiltersAPI(queryParams)
       .then((res) => {
-        setCruiseDetails(res.data);
         setNewCruiseDetails(res.data);
       })
       .catch((error) => {
         setNewCruiseDetails([]);
+        console.log(error);
+      });
+  };
+
+  //Save Cruise booking data
+  const saveCruiseBooking = () => {
+    saveCruiseBookingAPI(queryParams) //TODO: Replace the queryParams
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -328,11 +344,13 @@ function Cruise() {
                   onChange={handleChangeDeparture}
                   style={{ backgroundColor: "#fff" }}
                 >
-                  {Array.from(uniqueCruiseDeparture).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseDeparture)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -353,11 +371,13 @@ function Cruise() {
                   onChange={handleChangeArrival}
                   style={{ backgroundColor: "#fff" }}
                 >
-                  {Array.from(uniqueCruiseArrival).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseArrival)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -378,11 +398,13 @@ function Cruise() {
                   onChange={handleChangeCabin}
                   style={{ backgroundColor: "#fff" }}
                 >
-                  {Array.from(uniqueCruiseCabin).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseCabin)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -403,11 +425,13 @@ function Cruise() {
                   onChange={handleChangeDeck}
                   style={{ backgroundColor: "#fff" }}
                 >
-                  {Array.from(uniqueCruiseDeck).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseDeck)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -527,11 +551,13 @@ function Cruise() {
                     label="cruise_provider"
                     onChange={handleChangeCruiseProvider}
                   >
-                    {Array.from(uniqueCruiseProviders).map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
+                    {Array.from(uniqueCruiseProviders)
+                      .sort()
+                      .map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
               </Grid>
