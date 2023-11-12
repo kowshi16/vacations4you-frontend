@@ -51,7 +51,17 @@ export default function CruiseBooking() {
 
   const formatDate = (event) => {
     const input = event.target;
-    input.value = input.value.replace(/[^0-9/]/g, "");
+    const inputValue = input.value.replace(/[^0-9]/g, "");
+
+    if (inputValue.length <= 4) {
+      input.value = inputValue;
+    } else if (inputValue.length <= 6) {
+      input.value = inputValue.replace(/(\d{4})(\d{0,2})/, "$1-$2");
+    } else {
+      input.value = inputValue
+        .replace(/(\d{4})(\d{2})(\d{0,2})/, "$1-$2-$3")
+        .slice(0, 10);
+    }
   };
 
   const onlyLetters = (event) => {
@@ -303,6 +313,7 @@ export default function CruiseBooking() {
                         label="Expiry Date"
                         variant="outlined"
                         fullWidth
+                        placeholder="YYYY-MM-DD"
                         onInput={formatDate}
                         error={Boolean(fieldState.error)}
                         helperText={
