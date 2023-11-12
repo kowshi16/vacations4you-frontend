@@ -92,11 +92,6 @@ function Cruise() {
     return false;
   });
 
-  const handleChangePrice = (event) => {
-    setValuePrice(event.target.value);
-    filterCruise(event.target.value);
-  };
-
   const handleChangeDeparture = (event) => {
     setDeparture(event.target.value);
   };
@@ -113,12 +108,18 @@ function Cruise() {
     setCabin(event.target.value);
   };
 
+  const handleChangePrice = (event) => {
+    setValuePrice(event.target.value);
+    filterCruisePrice(event.target.value);
+  };
+
   const handleChangeDuration = (event) => {
     setDuration(event.target.value);
   };
 
   const handleChangeCruiseProvider = (event) => {
     setCruiseProvider(event.target.value);
+    filterCruiseProvider(event.target.value);
   };
 
   useEffect(() => {
@@ -203,41 +204,51 @@ function Cruise() {
       });
   };
 
-  // Filter Cruise
-  const filterCruise = (value) => {
+  // Filter cruise by price
+  const filterCruisePrice = (value) => {
     if (cruiseDetails.length <= 0) {
       fetchAllCruise();
     }
     if (value === "") {
       setNewCruiseDetails(cruiseDetails);
     } else if (value === "500") {
-      console.log(value);
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 500 && newValue.price <= 1000
       );
       setNewCruiseDetails(filteredCruise);
     } else if (value === "1001") {
-      console.log(value);
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 1001 && newValue.price <= 2000
       );
       setNewCruiseDetails(filteredCruise);
     } else if (value === "2001") {
-      console.log(value);
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 2001 && newValue.price <= 3000
       );
       setNewCruiseDetails(filteredCruise);
     } else if (value === "3001") {
-      console.log(value);
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 3001 && newValue.price <= 4000
       );
       setNewCruiseDetails(filteredCruise);
     } else if (value === "4001") {
-      console.log(value);
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 4001
+      );
+      setNewCruiseDetails(filteredCruise);
+    }
+  };
+
+  // Filter cruise by provider
+  const filterCruiseProvider = (value) => {
+    if (cruiseDetails.length <= 0) {
+      fetchAllCruise();
+    }
+    if (value === "") {
+      setNewCruiseDetails(cruiseDetails);
+    } else {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.cruise_provider === value
       );
       setNewCruiseDetails(filteredCruise);
     }
