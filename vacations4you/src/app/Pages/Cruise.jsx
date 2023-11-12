@@ -19,7 +19,11 @@ import {
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import moment from "moment";
-import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
+import {
+  getAllCruiseAPI,
+  getCruiseByFiltersAPI,
+  saveCruiseBookingAPI,
+} from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
@@ -203,6 +207,17 @@ function Cruise() {
       })
       .catch((error) => {
         setNewCruiseDetails([]);
+        console.log(error);
+      });
+  };
+
+  //Save Cruise booking data
+  const saveCruiseBooking = () => {
+    saveCruiseBookingAPI(queryParams) //TODO: Replace the queryParams
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -418,7 +433,7 @@ function Cruise() {
         </Card>
       </Grid>
 
-      <Grid container  style={{ marginTop: 40 }}>
+      <Grid container style={{ marginTop: 40 }}>
         <Grid item xs={3}>
           <Card className="second-filter">
             <Grid container style={{ marginTop: 20 }}>

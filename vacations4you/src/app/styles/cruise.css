@@ -63,6 +63,7 @@ main {
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 92%;
+  font-size: 15px;
 }
 
 .cruise {
