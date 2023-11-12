@@ -128,17 +128,17 @@ export default function CruiseBooking() {
     } catch (error) {
       console.error("Error during checkout:", error);
     }
-    
-    //Save Cruise booking data
-    const saveCruiseBooking = () => {
-      saveCruiseBookingAPI(updatedFormData) //TODO: Replace the queryParams
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+  };
+
+  //Save Cruise booking data
+  const saveCruiseBooking = () => {
+    saveCruiseBookingAPI(this.updatedFormData) //TODO: Replace the queryParams
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
