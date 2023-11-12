@@ -21,7 +21,6 @@ import moment from "moment";
 import {
   getAllCruiseAPI,
   getCruiseByFiltersAPI,
-  saveCruiseBookingAPI,
 } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
@@ -208,16 +207,6 @@ function Cruise() {
       });
   };
 
-  // //Save Cruise booking data
-  // const saveCruiseBooking = () => {
-  //   saveCruiseBookingAPI(queryParams) //TODO: Replace the queryParams
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   // Filter Cruise
   const filterCruise = (value) => {

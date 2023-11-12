@@ -24,7 +24,6 @@ import PhoneForwardedSharpIcon from "@mui/icons-material/PhoneForwardedSharp";
 import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
-import axios from "axios";
 import { saveCruiseBookingAPI } from "../../api/cruise";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
@@ -35,7 +34,6 @@ function subtotal(items) {
 
 export default function CruiseBooking() {
   const { control, handleSubmit } = useForm();
-  const [pack, setPack] = useState("");
 
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
