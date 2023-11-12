@@ -44,6 +44,8 @@ export default function CruiseBooking() {
 
   const invoiceSubtotal = subtotal(cartData);
 
+  const [cruiseBookingData, setCruiseBookingData] = useState("");
+
   // const handleChangeMeal = (event) => {
   //   setMeal(event.target.value);
   // };
@@ -99,7 +101,8 @@ export default function CruiseBooking() {
     name_on_card: "",
   });
 
-  const handleCheckout = async () => {
+  // const handleCheckout = async () => {
+  const handleCheckout = () => {
     try {
       const bookingDetails = cartData.map((row) => ({
         cruise_name: row.name,
@@ -119,10 +122,20 @@ export default function CruiseBooking() {
         number_of_booking: bookingDetails,
       };
 
-      console.log("Data to be sent:", updatedFormData);
-      const response = await axios.post(apiUrl, updatedFormData);
+      setCruiseBookingData(updatedFormData);
+      saveCruiseBooking();
 
-      console.log(response.data);
+      // console.log("Data to be sent:", updatedFormData);
+      // const response = await axios.post(apiUrl, updatedFormData);
+      // console.log(response.data);
+
+      // saveCruiseBookingAPI(updatedFormData)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
 
       setFormData({});
     } catch (error) {
@@ -130,9 +143,9 @@ export default function CruiseBooking() {
     }
   };
 
-  //Save Cruise booking data
+  // Save Cruise booking data
   const saveCruiseBooking = () => {
-    saveCruiseBookingAPI(this.updatedFormData) //TODO: Replace the queryParams
+    saveCruiseBookingAPI(cruiseBookingData) //TODO: Replace the queryParams
       .then((res) => {
         console.log(res.data);
       })
