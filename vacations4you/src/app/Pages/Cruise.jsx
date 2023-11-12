@@ -45,6 +45,58 @@ function Cruise() {
   const [cruise_provider, setCruiseProvider] = useState("");
   const [price, setValuePrice] = useState("");
 
+  const uniqueCruiseDeparture = new Set();
+  const uniqueCruiseArrival = new Set();
+  const uniqueCruiseCabin = new Set();
+  const uniqueCruiseDeck = new Set();
+  const uniqueCruiseProviders = new Set();
+
+  //The const provide cruise details of removed duplicate json object
+  // const uniqueCruise = [...new Set(cruiseDetails.map(JSON.stringify))].map(
+  //   JSON.parse
+  // );
+
+  // Filter the array based on unique departure
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseDeparture.has(option.departure)) {
+      uniqueCruiseDeparture.add(option.departure);
+      return true;
+    }
+    return false;
+  });
+  // Filter the array based on unique arrival
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseArrival.has(option.arrival)) {
+      uniqueCruiseArrival.add(option.arrival);
+      return true;
+    }
+    return false;
+  });
+  // Filter the array based on unique cabin
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseCabin.has(option.cabin)) {
+      uniqueCruiseCabin.add(option.cabin);
+      return true;
+    }
+    return false;
+  });
+  // Filter the array based on unique deck
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseDeck.has(option.deck)) {
+      uniqueCruiseDeck.add(option.deck);
+      return true;
+    }
+    return false;
+  });
+  // Filter the array based on unique cruise provider
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseProviders.has(option.cruise_provider)) {
+      uniqueCruiseProviders.add(option.cruise_provider);
+      return true;
+    }
+    return false;
+  });
+
   const handleChangePrice = (event) => {
     setValuePrice(event.target.value);
     filterCruise(event.target.value);
@@ -274,9 +326,11 @@ function Cruise() {
                   label="Departure"
                   onChange={handleChangeDeparture}
                 >
-                  <MenuItem value="Colombo">Colombo</MenuItem>
-                  <MenuItem value="Hambantota">Hambantota</MenuItem>
-                  <MenuItem value="Germany">Germany</MenuItem>
+                  {Array.from(uniqueCruiseDeparture).map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -291,9 +345,11 @@ function Cruise() {
                   label="Arrival"
                   onChange={handleChangeArrival}
                 >
-                  <MenuItem value="Colombo">Colombo</MenuItem>
-                  <MenuItem value="Hambantota">Hambantota</MenuItem>
-                  <MenuItem value="Germany">Germany</MenuItem>
+                  {Array.from(uniqueCruiseArrival).map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -308,9 +364,11 @@ function Cruise() {
                   label="Cabin"
                   onChange={handleChangeCabin}
                 >
-                  <MenuItem value="InsideCabin">Inside Cabin</MenuItem>
-                  <MenuItem value="OceanviewCabin">Oceanview Cabin</MenuItem>
-                  <MenuItem value="Suit">Suite</MenuItem>
+                  {Array.from(uniqueCruiseCabin).map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -325,9 +383,11 @@ function Cruise() {
                   label="Deck"
                   onChange={handleChangeDeck}
                 >
-                  <MenuItem value="D1">D1</MenuItem>
-                  <MenuItem value="D2">D2</MenuItem>
-                  <MenuItem value="D3">D3</MenuItem>
+                  {Array.from(uniqueCruiseDeck).map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -446,12 +506,11 @@ function Cruise() {
                     label="cruise_provider"
                     onChange={handleChangeCruiseProvider}
                   >
-                    <MenuItem value="carnival_cruise_line">
-                      Carnival Cruise Line
-                    </MenuItem>
-                    <MenuItem value="princess_cruises">
-                      Princess Cruises
-                    </MenuItem>
+                    {Array.from(uniqueCruiseProviders).map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -487,12 +546,12 @@ function Cruise() {
                       <strong>Price - </strong>$ {cruise.price}
                     </Grid>
                     <Grid item xs={12}>
-                      <strong>Arrival - </strong>
-                      {cruise.arrival}
-                    </Grid>
-                    <Grid item xs={12}>
                       <strong>Departure - </strong>
                       {cruise.departure}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <strong>Arrival - </strong>
+                      {cruise.arrival}
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Duration - </strong>
@@ -502,15 +561,13 @@ function Cruise() {
                       <strong>Provider - </strong>
                       {cruise.cruise_provider}
                     </Grid>
-
-                    <Grid item xs={12}>
-                      <strong>Arrival Date - </strong>
-                      {moment(cruise.arrival_date).format("YYYY-MM-DD")}
-                    </Grid>
-
                     <Grid item xs={12}>
                       <strong>Departure Date - </strong>
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <strong>Arrival Date - </strong>
+                      {moment(cruise.arrival_date).format("YYYY-MM-DD")}
                     </Grid>
 
                     <div className="buttons">
