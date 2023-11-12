@@ -62,7 +62,7 @@ main {
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
-  width: 100%;
+  width: 93%;
 }
 
 .cruise {
@@ -179,6 +179,7 @@ main {
   /* border: 2px solid rgb(6, 30, 109); */
   /* border-radius: 5%; */
   box-shadow: none !important;
+
 }
 
 .MuiSlider-root.MuiSlider-colorPrimary.MuiSlider-sizeMedium.css-187mznn-MuiSlider-root {

@@ -418,8 +418,8 @@ function Cruise() {
         </Card>
       </Grid>
 
-      <Grid container spacing={2} style={{ marginTop: 40 }}>
-        <Grid item xs={3}>
+      <Grid container  style={{ marginTop: 40 }}>
+        <Grid item xs={2}>
           <Card className="second-filter">
             <Grid container style={{ marginTop: 20 }}>
               <Grid item xs={10}>
@@ -469,7 +469,7 @@ function Cruise() {
                 </RadioGroup>
               </Grid>
 
-              <Grid item xs={10} style={{ marginTop: 10, marginLeft: 16 }}>
+              <Grid item xs={10} style={{ marginTop: 10, marginLeft: 10 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Duration
@@ -493,7 +493,7 @@ function Cruise() {
               <Grid
                 item
                 xs={10}
-                style={{ marginTop: 10, marginBottom: 10, marginLeft: 16 }}
+                style={{ marginTop: 10, marginBottom: 10, marginLeft: 10 }}
               >
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
@@ -518,7 +518,7 @@ function Cruise() {
           </Card>
         </Grid>
 
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <main>
             {/* <h2 className="title">Available Cruise Packages</h2> */}
             <div className="cruises">
