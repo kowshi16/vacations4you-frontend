@@ -88,7 +88,6 @@ function Cruise() {
     arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
   };
 
-  console.log("queryParams", queryParams);
   const addCruiseToCart = (cruise) => {
     const newCruise = {
       ...cruise,
