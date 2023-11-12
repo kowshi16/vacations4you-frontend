@@ -38,6 +38,7 @@ export const getCruiseByFiltersAPI = async (params) => {
 
 export const saveCruiseBookingAPI = async (params) => {
   try {
+    console.log(params)
     const response = await axios({
       method: "POST",
       baseURL: BASE_URL,

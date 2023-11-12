@@ -34,7 +34,6 @@ function subtotal(items) {
 }
 
 export default function CruiseBooking() {
-  // const [meal_preference, setMeal] = useState("");
   const { control, handleSubmit } = useForm();
   const [pack, setPack] = useState("");
 
@@ -44,19 +43,7 @@ export default function CruiseBooking() {
 
   const invoiceSubtotal = subtotal(cartData);
 
-  const [cruiseBookingData, setCruiseBookingData] = useState("");
-
-  // const handleChangeMeal = (event) => {
-  //   setMeal(event.target.value);
-  // };
-
-  // const handleChangePack = (event) => {
-  //   setPack(event.target.value);
-  // };
-
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
+  const [cruiseBookingData, setCruiseBookingData] = useState([]);
 
   const formatDate = (event) => {
     const input = event.target;
@@ -84,8 +71,6 @@ export default function CruiseBooking() {
     setCartData(updatedCartData);
   }, []);
 
-  const apiUrl = "http://localhost:5000/api/cruise/booking/save";
-
   const [formData, setFormData] = useState({
     user_id: 123,
     customer_first_name: "",
@@ -101,7 +86,7 @@ export default function CruiseBooking() {
     name_on_card: "",
   });
 
-  // const handleCheckout = async () => {
+  // const handleCheckout
   const handleCheckout = () => {
     try {
       const bookingDetails = cartData.map((row) => ({
@@ -124,20 +109,6 @@ export default function CruiseBooking() {
 
       setCruiseBookingData(updatedFormData);
       saveCruiseBooking();
-
-      // console.log("Data to be sent:", updatedFormData);
-      // const response = await axios.post(apiUrl, updatedFormData);
-      // console.log(response.data);
-
-      // saveCruiseBookingAPI(updatedFormData)
-      //   .then((res) => {
-      //     console.log(res.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-
-      setFormData({});
     } catch (error) {
       console.error("Error during checkout:", error);
     }
@@ -145,7 +116,7 @@ export default function CruiseBooking() {
 
   // Save Cruise booking data
   const saveCruiseBooking = () => {
-    saveCruiseBookingAPI(cruiseBookingData) //TODO: Replace the queryParams
+    saveCruiseBookingAPI(cruiseBookingData)
       .then((res) => {
         console.log(res.data);
       })
