@@ -136,12 +136,14 @@ function Cruise() {
 
   //Set cruise data by search criteria
   const queryParams = {
-    deck: deck,
-    cabin: cabin,
-    departure: departure,
-    arrival: arrival,
-    departure_date: moment(departure_date).format("YYYY-MM-DD"),
-    arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
+    deck: deck ? deck : "",
+    cabin: cabin ? cabin : "",
+    departure: departure ? departure : "",
+    arrival: arrival ? arrival : "",
+    departure_date: departure_date
+      ? moment(departure_date).format("YYYY-MM-DD")
+      : "",
+    arrival_date: arrival_date ? moment(arrival_date).format("YYYY-MM-DD") : "",
   };
 
   const addCruiseToCart = (cruise) => {
@@ -202,7 +204,6 @@ function Cruise() {
   const getCruiseBySearch = () => {
     getCruiseByFiltersAPI(queryParams)
       .then((res) => {
-        setCruiseDetails(res.data);
         setNewCruiseDetails(res.data);
       })
       .catch((error) => {
@@ -341,11 +342,13 @@ function Cruise() {
                   label="Departure"
                   onChange={handleChangeDeparture}
                 >
-                  {Array.from(uniqueCruiseDeparture).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseDeparture)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -360,11 +363,13 @@ function Cruise() {
                   label="Arrival"
                   onChange={handleChangeArrival}
                 >
-                  {Array.from(uniqueCruiseArrival).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseArrival)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -379,11 +384,13 @@ function Cruise() {
                   label="Cabin"
                   onChange={handleChangeCabin}
                 >
-                  {Array.from(uniqueCruiseCabin).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseCabin)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -398,11 +405,13 @@ function Cruise() {
                   label="Deck"
                   onChange={handleChangeDeck}
                 >
-                  {Array.from(uniqueCruiseDeck).map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {Array.from(uniqueCruiseDeck)
+                    .sort()
+                    .map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -521,11 +530,13 @@ function Cruise() {
                     label="cruise_provider"
                     onChange={handleChangeCruiseProvider}
                   >
-                    {Array.from(uniqueCruiseProviders).map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
+                    {Array.from(uniqueCruiseProviders)
+                      .sort()
+                      .map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
               </Grid>
