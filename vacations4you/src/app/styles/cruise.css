@@ -62,7 +62,7 @@ main {
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
-  width: 93%;
+  width: 92%;
 }
 
 .cruise {
@@ -174,7 +174,7 @@ main {
 
 .second-filter {
   margin-top: 2%;
-  margin-left: 20px;
+  margin-left: 45px;
   /* height: 500px; */
   /* border: 2px solid rgb(6, 30, 109); */
   /* border-radius: 5%; */

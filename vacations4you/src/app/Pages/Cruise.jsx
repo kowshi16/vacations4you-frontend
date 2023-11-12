@@ -419,7 +419,7 @@ function Cruise() {
       </Grid>
 
       <Grid container  style={{ marginTop: 40 }}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <Card className="second-filter">
             <Grid container style={{ marginTop: 20 }}>
               <Grid item xs={10}>
@@ -518,7 +518,7 @@ function Cruise() {
           </Card>
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <main>
             {/* <h2 className="title">Available Cruise Packages</h2> */}
             <div className="cruises">
