@@ -298,8 +298,8 @@ export default function CruiseBooking() {
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
                   {" "}
-                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences &
-                  PAX Count
+                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences & PAX
+                  Count
                 </label>
               </Grid>
             </Grid>
