@@ -22,7 +22,7 @@ import moment from "moment";
 
 import PhoneForwardedSharpIcon from "@mui/icons-material/PhoneForwardedSharp";
 import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
-import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
+
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
@@ -75,8 +75,22 @@ export default function CruiseBooking() {
   const { control, handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    // Handle form submission logic
     console.log(data);
+  };
+
+  const onlyNumbers = (event) => {
+    const input = event.target;
+    input.value = input.value.replace(/\D/g, "");
+  };
+
+  const formatDate = (event) => {
+    const input = event.target;
+    input.value = input.value.replace(/[^0-9/]/g, "");
+  };
+
+  const onlyLetters = (event) => {
+    const input = event.target;
+    input.value = input.value.replace(/[^a-zA-Z ]/g, "");
   };
 
   return (
@@ -269,7 +283,7 @@ export default function CruiseBooking() {
           </Card>
         </Grid>
 
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        {/* <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
           <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
             <Grid
               container
@@ -378,6 +392,99 @@ export default function CruiseBooking() {
               </form>
             </Grid>
           </Card>
+        </Grid> */}
+
+        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+          <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Controller
+                    name="cardNumber"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Card number is required" }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Card Number"
+                        variant="outlined"
+                        fullWidth
+                        onInput={onlyNumbers}
+                        error={Boolean(fieldState.error)}
+                        helperText={
+                          fieldState.error ? fieldState.error.message : null
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name="expiryDate"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Expiry date is required" }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Expiry Date"
+                        variant="outlined"
+                        fullWidth
+                        onInput={formatDate}
+                        error={Boolean(fieldState.error)}
+                        helperText={
+                          fieldState.error ? fieldState.error.message : null
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name="cvv"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "CVV is required" }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="CVV"
+                        variant="outlined"
+                        fullWidth
+                        onInput={onlyNumbers}
+                        error={Boolean(fieldState.error)}
+                        helperText={
+                          fieldState.error ? fieldState.error.message : null
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Controller
+                    name="nameOnCard"
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: "Name on card is required" }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Name on Card"
+                        variant="outlined"
+                        fullWidth
+                        onInput={onlyLetters}
+                        error={Boolean(fieldState.error)}
+                        helperText={
+                          fieldState.error ? fieldState.error.message : null
+                        }
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </form>
+          </Card>
         </Grid>
 
         <Grid
@@ -387,7 +494,10 @@ export default function CruiseBooking() {
           sx={{ marginTop: 5, marginBottom: 5 }}
         >
           <Grid item sm={3}>
-            <Button fullWidth style={{background: "var(--main-color)", color: "#fff"}}>
+            <Button
+              fullWidth
+              style={{ background: "var(--main-color)", color: "#fff" }}
+            >
               Checkout
             </Button>
           </Grid>

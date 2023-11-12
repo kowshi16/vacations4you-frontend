@@ -24,7 +24,6 @@ import { Image } from "../features/landingPage/landingPageComponents/customCompo
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 
-
 function Cruise() {
   const [cartsVisibility, setCartVisible] = useState(false);
 
@@ -362,7 +361,7 @@ function Cruise() {
       <Grid container spacing={2} style={{ marginTop: 40 }}>
         <Grid item xs={3}>
           <Card className="second-filter">
-            <Grid container style={{ marginTop: 40 }}>
+            <Grid container style={{ marginTop: 20 }}>
               <Grid item xs={10}>
                 <FormLabel
                   id="demo-controlled-radio-buttons-group"
@@ -410,7 +409,7 @@ function Cruise() {
                 </RadioGroup>
               </Grid>
 
-              <Grid item xs={10} style={{ marginTop: 25, marginLeft: 16 }}>
+              <Grid item xs={10} style={{ marginTop: 10, marginLeft: 16 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Duration
@@ -434,7 +433,7 @@ function Cruise() {
               <Grid
                 item
                 xs={10}
-                style={{ marginTop: 40, marginBottom: 40, marginLeft: 16 }}
+                style={{ marginTop: 10, marginBottom: 10, marginLeft: 16 }}
               >
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
@@ -474,44 +473,45 @@ function Cruise() {
                     />
                     <h4 className="cruise-name">{cruise.name}</h4>
                     <RatingStars rating={cruise.rating} />
-                    <p>
+
+                    <Grid item xs={12}>
                       <strong>Cabin - </strong>
                       {cruise.cabin}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Deck - </strong>
                       {cruise.deck}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Price - </strong>
                       {cruise.price}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Arrival - </strong>
                       {cruise.arrival}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Departure - </strong>
                       {cruise.departure}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Duration - </strong>
                       {cruise.duration}
-                    </p>
-                    <p>
+                    </Grid>
+                    <Grid item xs={12}>
                       <strong>Provider - </strong>
                       {cruise.cruise_provider}
-                    </p>
+                    </Grid>
 
-                    <p>
+                    <Grid item xs={12}>
                       <strong>Arrival Date - </strong>
                       {moment(cruise.arrival_date).format("YYYY-MM-DD")}
-                    </p>
+                    </Grid>
 
-                    <p>
+                    <Grid item xs={12}>
                       <strong>Departure Date - </strong>
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
-                    </p>
+                    </Grid>
 
                     <span className="cruise-price">{cruise.price}$</span>
                     <div className="buttons">
