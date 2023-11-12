@@ -14,7 +14,6 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  FormLabel,
 } from "@mui/material";
 import { DateRangePicker } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
@@ -23,6 +22,8 @@ import { getAllCruiseAPI, getCruiseByFiltersAPI } from "../../api/cruise";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+import FilterListSharpIcon from "@mui/icons-material/FilterListSharp";
+
 
 function Cruise() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -50,11 +51,6 @@ function Cruise() {
   const uniqueCruiseCabin = new Set();
   const uniqueCruiseDeck = new Set();
   const uniqueCruiseProviders = new Set();
-
-  //The const provide cruise details of removed duplicate json object
-  // const uniqueCruise = [...new Set(cruiseDetails.map(JSON.stringify))].map(
-  //   JSON.parse
-  // );
 
   // Filter the array based on unique departure
   cruiseDetails.filter((option) => {
@@ -285,10 +281,10 @@ function Cruise() {
           <Grid
             container
             alignItems="center"
-            style={{ borderBottom: "1px solid #000" }}
+            style={{ borderBottom: "1px solid #fff" }}
           >
             <Grid item sm={12}>
-              <label style={{ fontSize: 15 }}>
+              <label style={{ fontSize: 15, color: "#fff" }}>
                 {" "}
                 <SearchSharpIcon fontSize="small" /> Cruise Search
               </label>
@@ -318,13 +314,19 @@ function Cruise() {
 
             <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Departure</InputLabel>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ backgroundColor: "#fff" }}
+                >
+                  Departure
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={departure}
                   label="Departure"
                   onChange={handleChangeDeparture}
+                  style={{ backgroundColor: "#fff" }}
                 >
                   {Array.from(uniqueCruiseDeparture).map((option) => (
                     <MenuItem key={option} value={option}>
@@ -337,13 +339,19 @@ function Cruise() {
 
             <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Arrival</InputLabel>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ backgroundColor: "#fff" }}
+                >
+                  Arrival
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={arrival}
                   label="Arrival"
                   onChange={handleChangeArrival}
+                  style={{ backgroundColor: "#fff" }}
                 >
                   {Array.from(uniqueCruiseArrival).map((option) => (
                     <MenuItem key={option} value={option}>
@@ -356,13 +364,19 @@ function Cruise() {
 
             <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Cabin</InputLabel>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ backgroundColor: "#fff" }}
+                >
+                  Cabin
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={cabin}
                   label="Cabin"
                   onChange={handleChangeCabin}
+                  style={{ backgroundColor: "#fff" }}
                 >
                   {Array.from(uniqueCruiseCabin).map((option) => (
                     <MenuItem key={option} value={option}>
@@ -375,13 +389,19 @@ function Cruise() {
 
             <Grid item sm={6} style={{ marginTop: 5 }}>
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Deck</InputLabel>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  style={{ backgroundColor: "#fff" }}
+                >
+                  Deck
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={deck}
                   label="Deck"
                   onChange={handleChangeDeck}
+                  style={{ backgroundColor: "#fff" }}
                 >
                   {Array.from(uniqueCruiseDeck).map((option) => (
                     <MenuItem key={option} value={option}>
@@ -408,6 +428,7 @@ function Cruise() {
                 style={{
                   border: "1px solid var(--main-color)",
                   color: "var(--main-color)",
+                  fontWeight: "bold"
                 }}
                 onClick={handleClearClick}
               >
@@ -418,18 +439,18 @@ function Cruise() {
         </Card>
       </Grid>
 
-      <Grid container  style={{ marginTop: 40 }}>
+      <Grid container style={{ marginTop: 40 }}>
         <Grid item xs={3}>
           <Card className="second-filter">
+            <Grid item xs={9} style={{ borderBottom: "1px solid #000" }}>
+              <label style={{ fontSize: 15 }}>
+                {" "}
+                <FilterListSharpIcon fontSize="small" /> Filters
+              </label>
+            </Grid>
+
             <Grid container style={{ marginTop: 20 }}>
               <Grid item xs={10}>
-                <FormLabel
-                  id="demo-controlled-radio-buttons-group"
-                  style={{ marginLeft: 16 }}
-                >
-                  Price
-                </FormLabel>
-
                 <RadioGroup
                   aria-labelledby="demo-controlled-radio-buttons-group"
                   name="controlled-radio-buttons-group"
@@ -531,8 +552,11 @@ function Cruise() {
                       alt={cruise.image_path}
                     />
 
-                    <h4 className="cruise-name">{cruise.name}</h4>
-                    <RatingStars rating={cruise.rating} />
+                    <h5 className="cruise-name">{cruise.name}</h5>
+
+                    <Grid item xs={12}>
+                      <RatingStars rating={cruise.rating} />
+                    </Grid>
 
                     <Grid item xs={12}>
                       <strong>Cabin - </strong>

@@ -24,6 +24,7 @@ import PhoneForwardedSharpIcon from "@mui/icons-material/PhoneForwardedSharp";
 import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
+import axios from "axios";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
 
@@ -32,8 +33,9 @@ function subtotal(items) {
 }
 
 export default function CruiseBooking() {
-  const [meal, setMeal] = React.useState("");
+  // const [meal_preference, setMeal] = useState("");
   const { control, handleSubmit } = useForm();
+  const [pack, setPack] = useState("");
 
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
@@ -41,13 +43,17 @@ export default function CruiseBooking() {
 
   const invoiceSubtotal = subtotal(cartData);
 
-  const handleChangeMeal = (event) => {
-    setMeal(event.target.value);
-  };
+  // const handleChangeMeal = (event) => {
+  //   setMeal(event.target.value);
+  // };
 
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  // const handleChangePack = (event) => {
+  //   setPack(event.target.value);
+  // };
+
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  // };
 
   const formatDate = (event) => {
     const input = event.target;
@@ -75,6 +81,55 @@ export default function CruiseBooking() {
     setCartData(updatedCartData);
   }, []);
 
+  
+
+  const apiUrl = "http://localhost:5000/api/cruise/booking/save";
+
+  const [formData, setFormData] = useState({
+    customer_first_name: "",
+    customer_last_name: "",
+    customer_email: "",
+    customer_phone_no: "",
+    meal_preference: "",
+    number_of_participants: "",
+    date: new Date(),
+    card_number: "",
+    expiry_date: "",
+    cvv: "",
+    name_on_card: "",
+  });
+
+  const handleCheckout = async () => {
+    try {
+      const bookingDetails = cartData.map((row) => ({
+        cruise_name: row.name,
+        cabin: row.cabin,
+        deck: row.deck,
+        departure: row.departure,
+        arrival: row.arrival,
+        departure_date: row.departure_date,
+        arrival_date: row.arrival_date,
+        price: row.price,
+        duration: row.duration,
+        cruise_provider: row.cruise_provider,
+      }));
+
+      const updatedFormData = {
+        ...formData,
+        number_of_booking: bookingDetails,
+      };
+
+      console.log('Data to be sent:', updatedFormData);
+      const response = await axios.post(apiUrl, updatedFormData);
+
+      console.log(response.data);
+
+      setFormData({});
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
+  };
+
   return (
     <div className="cruiseBookingCard">
       <Card />
@@ -92,7 +147,7 @@ export default function CruiseBooking() {
                   <TableRow>
                     <TableCell
                       align="left"
-                      colSpan={10}
+                      colSpan={11}
                       style={{ borderBottom: "1px solid #000" }}
                     >
                       <InventorySharpIcon />
@@ -101,6 +156,7 @@ export default function CruiseBooking() {
                   </TableRow>
 
                   <TableRow>
+                    <TableCell>Name</TableCell>
                     <TableCell>Provider</TableCell>
                     <TableCell align="right">Cabin</TableCell>
                     <TableCell align="right">Deck</TableCell>
@@ -116,6 +172,7 @@ export default function CruiseBooking() {
                   {cartData.map((row, index) => (
                     <TableRow key={index}>
                       <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.cruise_provider}</TableCell>
                       <TableCell align="right">{row.cabin}</TableCell>
                       <TableCell align="right">{row.deck}</TableCell>
                       <TableCell align="right">{row.departure}</TableCell>
@@ -135,8 +192,8 @@ export default function CruiseBooking() {
                     </TableRow>
                   ))}
                   <TableRow>
-                    <TableCell rowSpan={9} />
-                    <TableCell align="right" colSpan={7}>
+                    <TableCell rowSpan={10} />
+                    <TableCell align="right" colSpan={8}>
                       Total
                     </TableCell>
                     <TableCell align="right">
@@ -177,6 +234,13 @@ export default function CruiseBooking() {
                   label="First Name"
                   variant="outlined"
                   onInput={onlyLetters}
+                  value={formData.customer_first_name}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      customer_first_name: e.target.value,
+                    })
+                  }
                 />
               </Grid>
 
@@ -187,6 +251,13 @@ export default function CruiseBooking() {
                   label="Last Name"
                   variant="outlined"
                   onInput={onlyLetters}
+                  value={formData.customer_last_name}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      customer_last_name: e.target.value,
+                    })
+                  }
                 />
               </Grid>
 
@@ -196,6 +267,10 @@ export default function CruiseBooking() {
                   type="email"
                   variant="outlined"
                   fullWidth
+                  value={formData.customer_email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, customer_email: e.target.value })
+                  }
                 />
               </Grid>
 
@@ -210,6 +285,13 @@ export default function CruiseBooking() {
                       .replace(/\D/g, "")
                       .slice(0, 10);
                   }}
+                  value={formData.customer_phone_no}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      customer_phone_no: e.target.value,
+                    })
+                  }
                 />
               </Grid>
             </Grid>
@@ -226,7 +308,8 @@ export default function CruiseBooking() {
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
                   {" "}
-                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences
+                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences and
+                  Packs Count
                 </label>
               </Grid>
             </Grid>
@@ -245,9 +328,16 @@ export default function CruiseBooking() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={meal}
+                    // value={meal_preference}
                     label="Meal Preferences"
-                    onChange={handleChangeMeal}
+                    // onChange={handleChangeMeal}
+                    value={formData.meal_preference}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        meal_preference: e.target.value,
+                      })
+                    }
                   >
                     <MenuItem value="RoomService">Room Service</MenuItem>
                     <MenuItem value="Buffet">Buffet</MenuItem>
@@ -255,7 +345,38 @@ export default function CruiseBooking() {
                 </FormControl>
               </Grid>
 
-              <Grid item sm={6} style={{ marginTop: 10 }}></Grid>
+              <Grid item sm={2} style={{ marginTop: 10 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Packs</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    // value={pack}
+                    label="Packs"
+                    // onChange={handleChangePack}
+                    value={formData.number_of_participants}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        number_of_participants: e.target.value,
+                      })
+                    }
+                  >
+                    <MenuItem value="1">1</MenuItem>
+                    <MenuItem value="2">2</MenuItem>
+                    <MenuItem value="3">3</MenuItem>
+                    <MenuItem value="4">4</MenuItem>
+                    <MenuItem value="5">5</MenuItem>
+                    <MenuItem value="6">6</MenuItem>
+                    <MenuItem value="7">7</MenuItem>
+                    <MenuItem value="8">8</MenuItem>
+                    <MenuItem value="9">9</MenuItem>
+                    <MenuItem value="10">10</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item sm={4}></Grid>
             </Grid>
           </Card>
         </Grid>
@@ -275,103 +396,131 @@ export default function CruiseBooking() {
               </Grid>
             </Grid>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={2} style={{ marginTop: 1 }}>
-                <Grid item sm={6}>
-                  <Controller
-                    name="cardNumber"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "Card number is required" }}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        label="Card Number"
-                        variant="outlined"
-                        fullWidth
-                        onInput={(e) => {
-                          e.target.value = e.target.value
-                            .replace(/\D/g, "")
-                            .slice(0, 16);
-                        }}
-                        error={Boolean(fieldState.error)}
-                        helperText={
-                          fieldState.error ? fieldState.error.message : null
-                        }
-                        {...field}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <Controller
-                    name="expiryDate"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "Expiry date is required" }}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        label="Expiry Date"
-                        variant="outlined"
-                        fullWidth
-                        placeholder="YYYY-MM-DD"
-                        onInput={formatDate}
-                        error={Boolean(fieldState.error)}
-                        helperText={
-                          fieldState.error ? fieldState.error.message : null
-                        }
-                        {...field}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <Controller
-                    name="cvv"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "CVV is required" }}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        label="CVV"
-                        variant="outlined"
-                        fullWidth
-                        error={Boolean(fieldState.error)}
-                        helperText={
-                          fieldState.error ? fieldState.error.message : null
-                        }
-                        {...field}
-                        onInput={(e) => {
-                          e.target.value = e.target.value
-                            .replace(/\D/g, "")
-                            .slice(0, 3);
-                        }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <Controller
-                    name="nameOnCard"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "Name on card is required" }}
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        label="Name on Card"
-                        variant="outlined"
-                        fullWidth
-                        onInput={onlyLetters}
-                        error={Boolean(fieldState.error)}
-                        helperText={
-                          fieldState.error ? fieldState.error.message : null
-                        }
-                        {...field}
-                      />
-                    )}
-                  />
-                </Grid>
+            {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+            <Grid container spacing={2} style={{ marginTop: 1 }}>
+              <Grid item sm={6}>
+                <Controller
+                  name="cardNumber"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "Card number is required" }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      label="Card Number"
+                      variant="outlined"
+                      fullWidth
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 16);
+                      }}
+                      error={Boolean(fieldState.error)}
+                      helperText={
+                        fieldState.error ? fieldState.error.message : null
+                      }
+                      {...field}
+                      value={formData.card_number}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          card_number: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                />
               </Grid>
-            </form>
+              <Grid item sm={6}>
+                <Controller
+                  name="expiryDate"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "Expiry date is required" }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      label="Expiry Date"
+                      variant="outlined"
+                      fullWidth
+                      placeholder="YYYY-MM-DD"
+                      onInput={formatDate}
+                      error={Boolean(fieldState.error)}
+                      helperText={
+                        fieldState.error ? fieldState.error.message : null
+                      }
+                      {...field}
+                      value={formData.expiry_date}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          expiry_date: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <Controller
+                  name="cvv"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "CVV is required" }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      label="CVV"
+                      variant="outlined"
+                      fullWidth
+                      error={Boolean(fieldState.error)}
+                      helperText={
+                        fieldState.error ? fieldState.error.message : null
+                      }
+                      {...field}
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 3);
+                      }}
+                      value={formData.cvv}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          cvv: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <Controller
+                  name="nameOnCard"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: "Name on card is required" }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      label="Name on Card"
+                      variant="outlined"
+                      fullWidth
+                      onInput={onlyLetters}
+                      error={Boolean(fieldState.error)}
+                      helperText={
+                        fieldState.error ? fieldState.error.message : null
+                      }
+                      {...field}
+                      value={formData.name_on_card}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          name_on_card: e.target.value,
+                        })
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+            {/* </form> */}
           </Card>
         </Grid>
 
@@ -385,6 +534,7 @@ export default function CruiseBooking() {
             <Button
               fullWidth
               style={{ background: "var(--main-color)", color: "#fff" }}
+              onClick={handleCheckout}
             >
               Checkout
             </Button>
