@@ -88,7 +88,6 @@ function Cruise() {
     arrival_date: moment(arrival_date).format("YYYY-MM-DD"),
   };
 
-  console.log("queryParams", queryParams);
   const addCruiseToCart = (cruise) => {
     const newCruise = {
       ...cruise,
@@ -151,6 +150,7 @@ function Cruise() {
         setNewCruiseDetails(res.data);
       })
       .catch((error) => {
+        setNewCruiseDetails([]);
         console.log(error);
       });
   };
@@ -484,8 +484,7 @@ function Cruise() {
                       {cruise.deck}
                     </Grid>
                     <Grid item xs={12}>
-                      <strong>Price - </strong>
-                      {cruise.price}
+                      <strong>Price - </strong>$ {cruise.price}
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Arrival - </strong>
@@ -514,7 +513,6 @@ function Cruise() {
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
                     </Grid>
 
-                    <span className="cruise-price">{cruise.price}$</span>
                     <div className="buttons">
                       <button
                         className="button"
