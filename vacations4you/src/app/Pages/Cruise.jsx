@@ -471,6 +471,7 @@ function Cruise() {
                       src={cruise.image_path}
                       alt={cruise.image_path}
                     />
+
                     <h4 className="cruise-name">{cruise.name}</h4>
                     <RatingStars rating={cruise.rating} />
 

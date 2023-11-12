@@ -22,7 +22,7 @@ import moment from "moment";
 
 import PhoneForwardedSharpIcon from "@mui/icons-material/PhoneForwardedSharp";
 import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
-
+import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
@@ -32,55 +32,21 @@ function subtotal(items) {
 }
 
 export default function CruiseBooking() {
+  const [meal, setMeal] = React.useState("");
+  const { control, handleSubmit } = useForm();
+
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
 
-  useEffect(() => {
-    const updatedCartData =
-      JSON.parse(localStorage.getItem("shopping-cart")) || [];
-    setCartData(updatedCartData);
-  }, []);
-
   const invoiceSubtotal = subtotal(cartData);
-
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [isValid, setIsValid] = useState(true);
-
-  const handleEmailChange = (event) => {
-    const inputEmail = event.target.value;
-    setEmail(inputEmail);
-
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-    setIsValid(emailPattern.test(inputEmail));
-  };
-
-  const handlePhoneChange = (event) => {
-    const inputPhone = event.target.value;
-    setPhone(inputPhone);
-
-    const phonePattern = /^\d{10}$/;
-
-    setIsValid(phonePattern.test(inputPhone));
-  };
-
-  const [meal, setMeal] = React.useState("");
 
   const handleChangeMeal = (event) => {
     setMeal(event.target.value);
   };
 
-  const { control, handleSubmit } = useForm();
-
   const onSubmit = (data) => {
     console.log(data);
-  };
-
-  const onlyNumbers = (event) => {
-    const input = event.target;
-    input.value = input.value.replace(/\D/g, "");
   };
 
   const formatDate = (event) => {
@@ -92,6 +58,12 @@ export default function CruiseBooking() {
     const input = event.target;
     input.value = input.value.replace(/[^a-zA-Z ]/g, "");
   };
+
+  useEffect(() => {
+    const updatedCartData =
+      JSON.parse(localStorage.getItem("shopping-cart")) || [];
+    setCartData(updatedCartData);
+  }, []);
 
   return (
     <div className="cruiseBookingCard">
@@ -194,6 +166,7 @@ export default function CruiseBooking() {
                   id="outlined-basic"
                   label="First Name"
                   variant="outlined"
+                  onInput={onlyLetters}
                 />
               </Grid>
 
@@ -203,6 +176,7 @@ export default function CruiseBooking() {
                   id="outlined-basic"
                   label="Last Name"
                   variant="outlined"
+                  onInput={onlyLetters}
                 />
               </Grid>
 
@@ -212,10 +186,6 @@ export default function CruiseBooking() {
                   type="email"
                   variant="outlined"
                   fullWidth
-                  error={!isValid}
-                  helperText={!isValid ? "Invalid email address" : ""}
-                  value={email}
-                  onChange={handleEmailChange}
                 />
               </Grid>
 
@@ -223,16 +193,13 @@ export default function CruiseBooking() {
                 <TextField
                   label="Phone Number"
                   type="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
                   variant="outlined"
                   fullWidth
-                  error={!isValid}
-                  helperText={
-                    !isValid ? "Enter a valid 10-digit phone number" : ""
-                  }
-                  value={phone}
-                  onChange={handlePhoneChange}
+                  onInput={(e) => {
+                    e.target.value = e.target.value
+                      .replace(/\D/g, "")
+                      .slice(0, 10);
+                  }}
                 />
               </Grid>
             </Grid>
@@ -283,7 +250,7 @@ export default function CruiseBooking() {
           </Card>
         </Grid>
 
-        {/* <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
           <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
             <Grid
               container
@@ -293,112 +260,14 @@ export default function CruiseBooking() {
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
                   {" "}
-                  <MonetizationOnSharpIcon fontSize="small" /> Payment Methods
+                  <MonetizationOnSharpIcon fontSize="small" /> Payment Method
                 </label>
               </Grid>
             </Grid>
 
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-            >
-              <Grid item sm={6} style={{ marginTop: 10 }}></Grid>
-
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Controller
-                      name="cardNumber"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "Card number is required" }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label="Card Number"
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(fieldState.error)}
-                          helperText={
-                            fieldState.error ? fieldState.error.message : null
-                          }
-                          {...field}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Controller
-                      name="expiryDate"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "Expiry date is required" }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label="Expiry Date"
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(fieldState.error)}
-                          helperText={
-                            fieldState.error ? fieldState.error.message : null
-                          }
-                          {...field}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Controller
-                      name="cvv"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "CVV is required" }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label="CVV"
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(fieldState.error)}
-                          helperText={
-                            fieldState.error ? fieldState.error.message : null
-                          }
-                          {...field}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Controller
-                      name="nameOnCard"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "Name on card is required" }}
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          label="Name on Card"
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(fieldState.error)}
-                          helperText={
-                            fieldState.error ? fieldState.error.message : null
-                          }
-                          {...field}
-                        />
-                      )}
-                    />
-                  </Grid>
-                </Grid>
-              </form>
-            </Grid>
-          </Card>
-        </Grid> */}
-
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
-          <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
+              <Grid container spacing={2} style={{ marginTop: 1 }}>
+                <Grid item sm={6}>
                   <Controller
                     name="cardNumber"
                     control={control}
@@ -409,7 +278,11 @@ export default function CruiseBooking() {
                         label="Card Number"
                         variant="outlined"
                         fullWidth
-                        onInput={onlyNumbers}
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 16);
+                        }}
                         error={Boolean(fieldState.error)}
                         helperText={
                           fieldState.error ? fieldState.error.message : null
@@ -419,7 +292,7 @@ export default function CruiseBooking() {
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6}>
                   <Controller
                     name="expiryDate"
                     control={control}
@@ -440,7 +313,7 @@ export default function CruiseBooking() {
                     )}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6}>
                   <Controller
                     name="cvv"
                     control={control}
@@ -451,17 +324,21 @@ export default function CruiseBooking() {
                         label="CVV"
                         variant="outlined"
                         fullWidth
-                        onInput={onlyNumbers}
                         error={Boolean(fieldState.error)}
                         helperText={
                           fieldState.error ? fieldState.error.message : null
                         }
                         {...field}
+                        onInput={(e) => {
+                          e.target.value = e.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 3);
+                        }}
                       />
                     )}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item sm={6}>
                   <Controller
                     name="nameOnCard"
                     control={control}
