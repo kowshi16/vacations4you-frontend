@@ -281,7 +281,7 @@ function Cruise() {
       </div>
 
       <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
-        <Card style={{ padding: 20 }}>
+        <Card style={{ padding: 20 }} className="cruise-card">
           <Grid
             container
             alignItems="center"
