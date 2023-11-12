@@ -208,16 +208,16 @@ function Cruise() {
       });
   };
 
-  //Save Cruise booking data
-  const saveCruiseBooking = () => {
-    saveCruiseBookingAPI(queryParams) //TODO: Replace the queryParams
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // //Save Cruise booking data
+  // const saveCruiseBooking = () => {
+  //   saveCruiseBookingAPI(queryParams) //TODO: Replace the queryParams
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   // Filter Cruise
   const filterCruise = (value) => {

@@ -25,6 +25,7 @@ import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
 import axios from "axios";
+import { saveCruiseBookingAPI } from "../../api/cruise";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
 
@@ -81,11 +82,10 @@ export default function CruiseBooking() {
     setCartData(updatedCartData);
   }, []);
 
-  
-
   const apiUrl = "http://localhost:5000/api/cruise/booking/save";
 
   const [formData, setFormData] = useState({
+    user_id: 123,
     customer_first_name: "",
     customer_last_name: "",
     customer_email: "",
@@ -119,7 +119,7 @@ export default function CruiseBooking() {
         number_of_booking: bookingDetails,
       };
 
-      console.log('Data to be sent:', updatedFormData);
+      console.log("Data to be sent:", updatedFormData);
       const response = await axios.post(apiUrl, updatedFormData);
 
       console.log(response.data);
@@ -128,6 +128,17 @@ export default function CruiseBooking() {
     } catch (error) {
       console.error("Error during checkout:", error);
     }
+    
+    //Save Cruise booking data
+    const saveCruiseBooking = () => {
+      saveCruiseBookingAPI(updatedFormData) //TODO: Replace the queryParams
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
   };
 
   return (
