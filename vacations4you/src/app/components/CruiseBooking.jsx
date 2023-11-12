@@ -339,7 +339,7 @@ export default function CruiseBooking() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Packs"
+                    label="PAX"
                     value={formData.number_of_participants}
                     onChange={(e) =>
                       setFormData({
