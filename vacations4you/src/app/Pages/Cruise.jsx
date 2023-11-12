@@ -45,9 +45,27 @@ function Cruise() {
   const [cruise_provider, setCruiseProvider] = useState("");
   const [price, setValuePrice] = useState("");
 
+  const uniqueCruiseProviders = new Set();
+
+  //The const provide cruise details of removed duplicate json object
+  // const uniqueCruise = [...new Set(cruiseDetails.map(JSON.stringify))].map(
+  //   JSON.parse
+  // );
+
+  // Filter the array based on unique cruise provider
+  cruiseDetails.filter((option) => {
+    if (!uniqueCruiseProviders.has(option.cruise_provider)) {
+      uniqueCruiseProviders.add(option.cruise_provider);
+      return true;
+    }
+    return false;
+  });
+
   const handleChangePrice = (event) => {
     setValuePrice(event.target.value);
     filterCruise(event.target.value);
+
+    console.log(Array.from(uniqueCruiseProviders));
   };
 
   const handleChangeDeparture = (event) => {
@@ -446,12 +464,11 @@ function Cruise() {
                     label="cruise_provider"
                     onChange={handleChangeCruiseProvider}
                   >
-                    <MenuItem value="carnival_cruise_line">
-                      Carnival Cruise Line
-                    </MenuItem>
-                    <MenuItem value="princess_cruises">
-                      Princess Cruises
-                    </MenuItem>
+                    {Array.from(uniqueCruiseProviders).map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -487,12 +504,12 @@ function Cruise() {
                       <strong>Price - </strong>$ {cruise.price}
                     </Grid>
                     <Grid item xs={12}>
-                      <strong>Arrival - </strong>
-                      {cruise.arrival}
-                    </Grid>
-                    <Grid item xs={12}>
                       <strong>Departure - </strong>
                       {cruise.departure}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <strong>Arrival - </strong>
+                      {cruise.arrival}
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Duration - </strong>
@@ -502,15 +519,13 @@ function Cruise() {
                       <strong>Provider - </strong>
                       {cruise.cruise_provider}
                     </Grid>
-
-                    <Grid item xs={12}>
-                      <strong>Arrival Date - </strong>
-                      {moment(cruise.arrival_date).format("YYYY-MM-DD")}
-                    </Grid>
-
                     <Grid item xs={12}>
                       <strong>Departure Date - </strong>
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <strong>Arrival Date - </strong>
+                      {moment(cruise.arrival_date).format("YYYY-MM-DD")}
                     </Grid>
 
                     <div className="buttons">
