@@ -298,8 +298,8 @@ export default function CruiseBooking() {
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
                   {" "}
-                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences and
-                  Packs Count
+                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences &
+                  PAX Count
                 </label>
               </Grid>
             </Grid>
@@ -335,7 +335,7 @@ export default function CruiseBooking() {
 
               <Grid item sm={2} style={{ marginTop: 10 }}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Packs</InputLabel>
+                  <InputLabel id="demo-simple-select-label">PAX</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
