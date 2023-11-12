@@ -115,6 +115,7 @@ function Cruise() {
 
   const handleChangeDuration = (event) => {
     setDuration(event.target.value);
+    filterCruiseDuration(event.target.value);
   };
 
   const handleChangeCruiseProvider = (event) => {
@@ -234,6 +235,41 @@ function Cruise() {
     } else if (value === "4001") {
       const filteredCruise = cruiseDetails.filter(
         (newValue) => newValue.price >= 4001
+      );
+      setNewCruiseDetails(filteredCruise);
+    }
+  };
+
+  // Filter cruise by duration
+  const filterCruiseDuration = (value) => {
+    if (cruiseDetails.length <= 0) {
+      fetchAllCruise();
+    }
+    if (value === "") {
+      setNewCruiseDetails(cruiseDetails);
+    } else if (value === "1-3") {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.duration >= 1 && newValue.duration <= 3
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "4-6") {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.duration >= 4 && newValue.duration <= 6
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "7-9") {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.duration >= 7 && newValue.duration <= 9
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "10-13") {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.duration >= 10 && newValue.duration <= 13
+      );
+      setNewCruiseDetails(filteredCruise);
+    } else if (value === "14") {
+      const filteredCruise = cruiseDetails.filter(
+        (newValue) => newValue.duration >= 14
       );
       setNewCruiseDetails(filteredCruise);
     }
