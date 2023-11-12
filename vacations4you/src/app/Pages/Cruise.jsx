@@ -484,7 +484,7 @@ function Cruise() {
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Price - </strong>
-                      {cruise.price}
+                      $ {cruise.price}
                     </Grid>
                     <Grid item xs={12}>
                       <strong>Arrival - </strong>
@@ -513,7 +513,6 @@ function Cruise() {
                       {moment(cruise.departure_date).format("YYYY-MM-DD")}
                     </Grid>
 
-                    <span className="cruise-price">{cruise.price}$</span>
                     <div className="buttons">
                       <button
                         className="button"
