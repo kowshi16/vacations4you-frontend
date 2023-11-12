@@ -173,7 +173,7 @@ function Cruise() {
       });
   };
 
-  // Get all cruise - new method
+  // Get all cruise
   useEffect(() => {
     fetchAllCruise();
   }, []);
