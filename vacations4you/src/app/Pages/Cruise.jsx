@@ -157,7 +157,7 @@ function Cruise() {
     localStorage.setItem("shopping-cart", JSON.stringify(updatedCart));
   };
 
-  //Get all cruises
+  //Get all cruise
   const fetchAllCruise = () => {
     getAllCruiseAPI()
       .then((res) => {
@@ -170,7 +170,7 @@ function Cruise() {
       });
   };
 
-  // Get all cruises
+  // Get all cruise
   useEffect(() => {
     fetchAllCruise();
   }, []);
@@ -501,13 +501,10 @@ function Cruise() {
       <Grid container style={{ marginTop: 40 }}>
         <Grid item xs={3}>
           <Card className="second-filter">
-            <Grid
-              item
-              xs={9}
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
-            >
+            <Grid item xs={9} style={{ borderBottom: "1px solid #000" }}>
               <label style={{ fontSize: 15 }}>
-                <FilterListSharpIcon /> Filters
+                {" "}
+                <FilterListSharpIcon fontSize="small" /> Filters
               </label>
             </Grid>
 
