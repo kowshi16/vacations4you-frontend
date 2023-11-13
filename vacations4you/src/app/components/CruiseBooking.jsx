@@ -103,11 +103,14 @@ export default function CruiseBooking() {
       };
 
       setCruiseBookingData(updatedFormData);
-      saveCruiseBooking();
     } catch (error) {
       console.error("Error during checkout:", error);
     }
   };
+
+  useEffect(() => {
+    saveCruiseBooking();
+  }, [cruiseBookingData]);
 
   // Save Cruise booking data
   const saveCruiseBooking = () => {
@@ -116,7 +119,7 @@ export default function CruiseBooking() {
         console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("Error during cruise booking API request:", error);
       });
   };
 

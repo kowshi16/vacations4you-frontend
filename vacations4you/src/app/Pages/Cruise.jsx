@@ -59,6 +59,7 @@ function Cruise() {
     }
     return false;
   });
+
   // Filter the array based on unique arrival
   cruiseDetails.filter((option) => {
     if (!uniqueCruiseArrival.has(option.arrival)) {
@@ -67,6 +68,7 @@ function Cruise() {
     }
     return false;
   });
+
   // Filter the array based on unique cabin
   cruiseDetails.filter((option) => {
     if (!uniqueCruiseCabin.has(option.cabin)) {
@@ -75,6 +77,7 @@ function Cruise() {
     }
     return false;
   });
+
   // Filter the array based on unique deck
   cruiseDetails.filter((option) => {
     if (!uniqueCruiseDeck.has(option.deck)) {
@@ -83,6 +86,7 @@ function Cruise() {
     }
     return false;
   });
+  
   // Filter the array based on unique cruise provider
   cruiseDetails.filter((option) => {
     if (!uniqueCruiseProviders.has(option.cruise_provider)) {
