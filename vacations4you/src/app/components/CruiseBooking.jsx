@@ -180,11 +180,7 @@ export default function CruiseBooking() {
   const saveCruiseBooking = () => {
     saveCruiseBookingAPI(cruiseBookingData)
       .then((res) => {
-        console.log(res.data);
-        console.log(res.status);
-        console.log(res.data._id);
-        
-        if (res.status === 200) {
+        if (res.data.length !== 0 && res.status === 200) {
           handleOpenDialog(
             <>
               Cruise Booking Success! <br />
@@ -194,7 +190,7 @@ export default function CruiseBooking() {
               style={{ color: "green", fontSize: "40px" }}
             />
           );
-        } else {
+        } else if (res.data.length !== 0) {
           handleOpenDialog(
             "Something went wrong.",
             <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
