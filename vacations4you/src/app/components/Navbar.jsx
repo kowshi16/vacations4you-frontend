@@ -5,9 +5,18 @@ import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
 import "../styles/navbar.css";
 import { IconContext } from "react-icons";
+import * as FiIcons from "react-icons/fi";
+
 
 function NavBar() {
   const [sidebar, setSidebar] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("USER");
+    localStorage.removeItem("shopping-cart");
+    localStorage.removeItem("shopping-cart-activity");
+    window.location.replace("/login");
+  };
 
   const showSidebar = () => setSidebar(!sidebar);
   return (
@@ -36,6 +45,12 @@ function NavBar() {
                 </li>
               );
             })}
+            <li className="nav-text">
+              <Link onClick={handleLogout}>
+                <FiIcons.FiLogOut style={{ color: "#fff" }} />
+                <span>Logout</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </IconContext.Provider>
