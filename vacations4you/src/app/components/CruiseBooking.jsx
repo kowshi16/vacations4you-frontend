@@ -81,11 +81,16 @@ const CruiseBooking = () => {
       input.value = inputValue;
     } else if (inputValue.length <= 4) {
       const monthPart = inputValue.slice(0, 2);
+      const yearPart = inputValue.slice(2);
       const validMonth = Math.min(parseInt(monthPart, 10), 12);
-      inputValue = validMonth + inputValue.substring(2);
-      input.value = inputValue.replace(/(\d{2})(\d{0,2})/, "$1/$2");
+
+      input.value = `${String(validMonth).padStart(2, "0")}/${yearPart}`;
     } else {
-      input.value = inputValue.replace(/(\d{2})(\d{0,2})/, "$1/$2").slice(0, 5);
+      const monthPart = inputValue.slice(0, 2);
+      const yearPart = inputValue.slice(2, 4);
+      const validMonth = Math.min(parseInt(monthPart, 10), 12);
+
+      input.value = `${String(validMonth).padStart(2, "0")}/${yearPart}`;
     }
   };
 
