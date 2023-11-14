@@ -1,5 +1,4 @@
 :root {
-  /* --main-color: #00008B; */
   --main-color: #060b26;
   --text-color: #232323;
   --secondary-color: #112154;
@@ -7,9 +6,6 @@
 .cruiseBookingCard {
   background-color: rgba(160, 199, 219, 0.208);
   border-radius: 5px;
-  /* height: 250px; */
-  /* margin-left: 20px;
-  margin-right: 20px; */
   margin: 20px 100px 0 100px;
 }
 
@@ -22,7 +18,3 @@
   align-self: center;
   margin: 2rem 0;
 }
-
-/* .contactCard{
-  margin: 20px 100px 0 100px;
-} */

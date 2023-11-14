@@ -1,6 +1,5 @@
 :root {
   --main-color: #060b26;
-  /* --main-color: #00008b; */
   --text-color: #232323;
   --secondary-color: #112154;
 }
@@ -19,11 +18,6 @@
   overflow: hidden;
 }
 
-/* .navbar-cart {
-  color: #fff;
-  text-transform: uppercase;
-} */
-
 .button {
   border: none;
   outline: none;
@@ -41,19 +35,14 @@
   width: 20px;
   height: 20px;
   border-radius: 12px;
-  /* background-color: var(--secondary-color); */
   overflow: hidden;
 }
 
 main {
   width: 98%;
-  /* margin: auto; */
-  /* padding: 2rem 0; */
-  /* padding-left: 300px; */
 }
 
 .title {
-  /* margin-top: 5%; */
   margin-bottom: 2%;
 }
 
@@ -75,7 +64,6 @@ main {
   flex-basis: 25%;
   padding: 10px;
   border: 4px solid #fff;
-  /* background-color: #eee; */
   background-color: rgba(160, 199, 219, 0.208);
   position: relative;
   overflow: hidden;
@@ -139,21 +127,12 @@ main {
 }
 
 .cruise-card {
-  /* background-color: rgb(233, 233, 233); */
-  /* border: 2px solid rgb(6, 30, 109);
-  border-radius: 5px;
-  height: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center; */
   box-shadow:none !important;
   padding: 20px;
   background-image: url('../../images/Cruise Page/seascape.jpg');
   background-size: cover; 
   background-position: center; 
   color: white; 
-  /* opacity: 0.5 */
 }
 
 .cruise-div {
@@ -164,15 +143,10 @@ main {
   margin-right: 20px;
 }
 
-/* .rs-picker-toggle-textbox {
-  background-color: rgb(233, 233, 233) !important;
-} */
-
 .rs-picker-toggle.rs-btn.rs-btn-default {
   padding-top: 17px !important;
   padding-bottom: 17px !important;
   border: 2px solid rgb(195, 193, 193);
-  /* background-color: rgb(233, 233, 233) !important; */
 }
 
 .rs-picker-toggle.rs-btn.rs-btn-default:hover {
@@ -183,9 +157,6 @@ main {
 .second-filter {
   margin-top: 2%;
   margin-left: 45px;
-  /* height: 500px; */
-  /* border: 2px solid rgb(6, 30, 109); */
-  /* border-radius: 5%; */
   box-shadow: none !important;
 
 }

@@ -67,7 +67,6 @@ function CruiseCart({
             <Link to="/cruise-booking" className="button checkout-btn">
               Proceed to checkout
             </Link>
-          
           )}
         </div>
       </div>
