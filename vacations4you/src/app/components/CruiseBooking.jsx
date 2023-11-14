@@ -126,6 +126,8 @@ export default function CruiseBooking() {
     cruise_provider: row.cruise_provider,
   }));
 
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   // const handleCheckout
   const handleCheckout = () => {
     if (formData.customer_first_name === "") {
@@ -134,8 +136,8 @@ export default function CruiseBooking() {
     } else if (formData.customer_last_name === "") {
       setErrorMessage("Last Name is required");
       setOpenPopup(true);
-    } else if (formData.customer_email === "") {
-      setErrorMessage("Email is required");
+    } else if (!emailPattern.test(formData.customer_email)) {
+      setErrorMessage("Email is invalid");
       setOpenPopup(true);
     } else if (formData.customer_phone_no === "") {
       setErrorMessage("Phone Number is required");
