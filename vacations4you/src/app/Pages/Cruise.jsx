@@ -86,7 +86,7 @@ function Cruise() {
     }
     return false;
   });
-
+  
   // Filter the array based on unique cruise provider
   cruiseDetails.filter((option) => {
     if (!uniqueCruiseProviders.has(option.cruise_provider)) {
