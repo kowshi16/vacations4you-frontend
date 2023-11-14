@@ -18,7 +18,6 @@ import {
   TextField,
 } from "@mui/material";
 import moment from "moment";
-
 import PhoneForwardedSharpIcon from "@mui/icons-material/PhoneForwardedSharp";
 import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
@@ -36,9 +35,55 @@ export default function CruiseBooking() {
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
 
+  const storedUserData = JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
+
   const invoiceSubtotal = subtotal(cartData);
 
   const [cruiseBookingData, setCruiseBookingData] = useState([]);
+
+  const paxOptions = Array.from({ length: 10 }, (_, index) => index + 1);
+
+  const [openPopup, setOpenPopup] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const [dialogMessage, setDialogMessage] = useState("");
+
+  const [dialogIcon, setDialogIcon] = useState(null);
+
+  const handleOpenDialog = (message = "Cruise Booking Success", icon) => {
+    setOpenDialog(true);
+    setDialogMessage(message);
+    setDialogIcon(icon);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+  };
+
+  const clearFormData = () => {
+    setFormData({
+      customer_first_name: "",
+      customer_last_name: "",
+      customer_email: "",
+      customer_phone_no: "",
+      meal_preference: "",
+      number_of_participants: "",
+      card_number: "",
+      expiry_date: "",
+      cvv: "",
+      name_on_card: "",
+    });
+
+    setCartData([]);
+  };
 
   const formatDate = (event) => {
     const input = event.target;
@@ -66,8 +111,13 @@ export default function CruiseBooking() {
     setCartData(updatedCartData);
   }, []);
 
+  useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("USER")) || [];
+    setUserData(userDetails);
+  }, []);
+
   const [formData, setFormData] = useState({
-    user_id: 123,
+    user_id: userData.existingUser._id,
     customer_first_name: "",
     customer_last_name: "",
     customer_email: "",
@@ -110,15 +160,39 @@ export default function CruiseBooking() {
   };
 
   // Save Cruise booking data
-  const saveCruiseBooking = () => {
-    saveCruiseBookingAPI(cruiseBookingData)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  useEffect(() => {
+    const saveCruiseBooking = () => {
+      saveCruiseBookingAPI(cruiseBookingData)
+        .then((res) => {
+          if (res.data.length !== 0 && res.status === 200) {
+            handleOpenDialog(
+              <>
+                Cruise Booking Success! <br />
+                Your Booking No: <strong>{res.data._id}</strong>
+              </>,
+              <CheckCircleSharpIcon
+                style={{ color: "green", fontSize: "40px" }}
+              />
+            );
+            clearFormData();
+            localStorage.removeItem("shopping-cart");
+          } else if (res.data.length !== 0) {
+            handleOpenDialog(
+              "Something went wrong.",
+              <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error during cruise booking API request:", error);
+          handleOpenDialog(
+            "Something went wrong.",
+            <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
+          );
+        });
+    };
+    saveCruiseBooking();
+  }, [cruiseBookingData]);
 
   return (
     <div className="cruiseBookingCard">

@@ -304,6 +304,7 @@ function Cruise() {
   return (
     <div className="cruise-app">
       <div>{/* searching criteria */}</div>
+
       <CruiseCart
         visibility={cartsVisibility}
         cruises={cruisesInCart}
