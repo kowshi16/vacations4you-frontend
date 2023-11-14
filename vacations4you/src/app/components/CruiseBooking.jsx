@@ -129,7 +129,7 @@ const CruiseBooking = () => {
   }));
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const visaCardRegex = /^4\d{15}$/;
+  const visaCardRegex = /^\d{16}$/;
   const visaCardExpireDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
 
   // const handleCheckout
