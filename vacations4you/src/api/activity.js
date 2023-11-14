@@ -1,5 +1,5 @@
 import { BASE_URL } from "./core";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 export const getAllActivityAPI = async () => {
     try {
