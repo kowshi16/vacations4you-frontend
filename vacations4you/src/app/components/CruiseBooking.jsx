@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/cruiseBooking.css";
 import {
   Card,
@@ -16,10 +16,6 @@ import {
   Select,
   Button,
   TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import moment from "moment";
 
@@ -28,8 +24,6 @@ import FastfoodSharpIcon from "@mui/icons-material/FastfoodSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import InventorySharpIcon from "@mui/icons-material/InventorySharp";
 import { saveCruiseBookingAPI } from "../../api/cruise";
-import ErrorSharpIcon from "@mui/icons-material/ErrorSharp";
-import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
 
@@ -37,8 +31,7 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-// export default function CruiseBooking() {
-const CruiseBooking = () => {
+export default function CruiseBooking() {
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
@@ -47,50 +40,18 @@ const CruiseBooking = () => {
 
   const [cruiseBookingData, setCruiseBookingData] = useState([]);
 
-  const paxOptions = Array.from({ length: 10 }, (_, index) => index + 1);
-
-  const [openPopup, setOpenPopup] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const [dialogMessage, setDialogMessage] = useState("");
-
-  const [dialogIcon, setDialogIcon] = useState(null);
-
-  const handleOpenDialog = (message = "Cruise Booking Success", icon) => {
-    setOpenDialog(true);
-    setDialogMessage(message);
-    setDialogIcon(icon);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleClosePopup = () => {
-    setOpenPopup(false);
-  };
-
   const formatDate = (event) => {
     const input = event.target;
-    let inputValue = input.value.replace(/[^0-9]/g, "");
+    const inputValue = input.value.replace(/[^0-9]/g, "");
 
-    if (inputValue.length <= 2) {
+    if (inputValue.length <= 4) {
       input.value = inputValue;
-    } else if (inputValue.length <= 4) {
-      const monthPart = inputValue.slice(0, 2);
-      const yearPart = inputValue.slice(2);
-      const validMonth = Math.min(parseInt(monthPart, 10), 12);
-
-      input.value = `${String(validMonth).padStart(2, "0")}/${yearPart}`;
+    } else if (inputValue.length <= 6) {
+      input.value = inputValue.replace(/(\d{4})(\d{0,2})/, "$1-$2");
     } else {
-      const monthPart = inputValue.slice(0, 2);
-      const yearPart = inputValue.slice(2, 4);
-      const validMonth = Math.min(parseInt(monthPart, 10), 12);
-
-      input.value = `${String(validMonth).padStart(2, "0")}/${yearPart}`;
+      input.value = inputValue
+        .replace(/(\d{4})(\d{2})(\d{0,2})/, "$1-$2-$3")
+        .slice(0, 10);
     }
   };
 
@@ -120,101 +81,44 @@ const CruiseBooking = () => {
     name_on_card: "",
   });
 
-  const bookingDetails = cartData.map((row) => ({
-    cruise_name: row.name,
-    cabin: row.cabin,
-    deck: row.deck,
-    departure: row.departure,
-    arrival: row.arrival,
-    departure_date: row.departure_date,
-    arrival_date: row.arrival_date,
-    price: row.price,
-    duration: row.duration,
-    cruise_provider: row.cruise_provider,
-  }));
-
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const visaCardRegex = /^\d{16}$/;
-  const visaCardExpireDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-
   // const handleCheckout
   const handleCheckout = () => {
-    if (formData.customer_first_name === "") {
-      setErrorMessage("First Name is required");
-      setOpenPopup(true);
-    } else if (formData.customer_last_name === "") {
-      setErrorMessage("Last Name is required");
-      setOpenPopup(true);
-    } else if (!emailPattern.test(formData.customer_email)) {
-      setErrorMessage("Email is invalid");
-      setOpenPopup(true);
-    } else if (formData.customer_phone_no === "") {
-      setErrorMessage("Phone number is required");
-      setOpenPopup(true);
-    } else if (formData.meal_preference === "") {
-      setErrorMessage("Meal Preference is required");
-      setOpenPopup(true);
-    } else if (formData.number_of_participants === "") {
-      setErrorMessage("PAX is required");
-      setOpenPopup(true);
-    } else if (!visaCardRegex.test(formData.card_number)) {
-      setErrorMessage("Invalid card number");
-      setOpenPopup(true);
-    } else if (!visaCardExpireDateRegex.test(formData.expiry_date)) {
-      setErrorMessage("Expiry date is invalid");
-      setOpenPopup(true);
-    } else if (formData.cvv === "") {
-      setErrorMessage("CVV Date is required");
-      setOpenPopup(true);
-    } else if (formData.name_on_card === "") {
-      setErrorMessage("Name on card is required");
-      setOpenPopup(true);
-    } else {
-      try {
-        const updatedFormData = {
-          ...formData,
-          number_of_booking: bookingDetails,
-        };
+    try {
+      const bookingDetails = cartData.map((row) => ({
+        cruise_name: row.name,
+        cabin: row.cabin,
+        deck: row.deck,
+        departure: row.departure,
+        arrival: row.arrival,
+        departure_date: row.departure_date,
+        arrival_date: row.arrival_date,
+        price: row.price,
+        duration: row.duration,
+        cruise_provider: row.cruise_provider,
+      }));
 
-        setCruiseBookingData(updatedFormData);
-      } catch (error) {
-        console.error("Error during checkout:", error);
-      }
+      const updatedFormData = {
+        ...formData,
+        number_of_booking: bookingDetails,
+      };
+
+      setCruiseBookingData(updatedFormData);
+      saveCruiseBooking();
+    } catch (error) {
+      console.error("Error during checkout:", error);
     }
   };
 
   // Save Cruise booking data
-  useEffect(() => {
-    const saveCruiseBooking = () => {
-      saveCruiseBookingAPI(cruiseBookingData)
-        .then((res) => {
-          if (res.data.length !== 0 && res.status === 200) {
-            handleOpenDialog(
-              <>
-                Cruise Booking Success! <br />
-                Your Booking No: <strong>{res.data._id}</strong>
-              </>,
-              <CheckCircleSharpIcon
-                style={{ color: "green", fontSize: "40px" }}
-              />
-            );
-          } else if (res.data.length !== 0) {
-            handleOpenDialog(
-              "Something went wrong.",
-              <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Error during cruise booking API request:", error);
-          handleOpenDialog(
-            "Something went wrong.",
-            <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
-          );
-        });
-    };
-    saveCruiseBooking();
-  }, [cruiseBookingData]);
+  const saveCruiseBooking = () => {
+    saveCruiseBookingAPI(cruiseBookingData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="cruiseBookingCard">
@@ -234,7 +138,7 @@ const CruiseBooking = () => {
                     <TableCell
                       align="left"
                       colSpan={11}
-                      style={{ borderBottom: "1px solid blue", color: "blue" }}
+                      style={{ borderBottom: "1px solid #000" }}
                     >
                       <InventorySharpIcon />
                       Details
@@ -244,18 +148,14 @@ const CruiseBooking = () => {
                   <TableRow>
                     <TableCell>Name</TableCell>
                     <TableCell>Provider</TableCell>
-                    <TableCell align="center">Cabin</TableCell>
-                    <TableCell align="center">Deck</TableCell>
-                    <TableCell align="center">Departure</TableCell>
-                    <TableCell align="center">Arrival</TableCell>
-                    <TableCell align="center">Duration</TableCell>
-                    <TableCell align="center" style={{ width: "110px" }}>
-                      Arrival Date
-                    </TableCell>
-                    <TableCell align="center" style={{ width: "130px" }}>
-                      Departure Date
-                    </TableCell>
-                    <TableCell align="center">Price</TableCell>
+                    <TableCell align="right">Cabin</TableCell>
+                    <TableCell align="right">Deck</TableCell>
+                    <TableCell align="right">Departure</TableCell>
+                    <TableCell align="right">Arrival</TableCell>
+                    <TableCell align="right">Duration</TableCell>
+                    <TableCell align="right">Arrival Date</TableCell>
+                    <TableCell align="right">Departure Date</TableCell>
+                    <TableCell align="right">Price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -263,12 +163,12 @@ const CruiseBooking = () => {
                     <TableRow key={index}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.cruise_provider}</TableCell>
-                      <TableCell align="center">{row.cabin}</TableCell>
-                      <TableCell align="center">{row.deck}</TableCell>
-                      <TableCell align="center">{row.departure}</TableCell>
-                      <TableCell align="center">{row.arrival}</TableCell>
-                      <TableCell align="center">{row.duration}</TableCell>
-                      <TableCell align="center" style={{ width: "110px" }}>
+                      <TableCell align="right">{row.cabin}</TableCell>
+                      <TableCell align="right">{row.deck}</TableCell>
+                      <TableCell align="right">{row.departure}</TableCell>
+                      <TableCell align="right">{row.arrival}</TableCell>
+                      <TableCell align="right">{row.duration}</TableCell>
+                      <TableCell align="right">
                         {" "}
                         {moment(row.arrival_date).format("YYYY-MM-DD")}
                       </TableCell>
@@ -301,7 +201,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #000" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
@@ -393,7 +293,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #000" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
@@ -448,11 +348,16 @@ const CruiseBooking = () => {
                       })
                     }
                   >
-                    {paxOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
+                    <MenuItem value="1">1</MenuItem>
+                    <MenuItem value="2">2</MenuItem>
+                    <MenuItem value="3">3</MenuItem>
+                    <MenuItem value="4">4</MenuItem>
+                    <MenuItem value="5">5</MenuItem>
+                    <MenuItem value="6">6</MenuItem>
+                    <MenuItem value="7">7</MenuItem>
+                    <MenuItem value="8">8</MenuItem>
+                    <MenuItem value="9">9</MenuItem>
+                    <MenuItem value="10">10</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -467,7 +372,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #000" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
@@ -502,7 +407,7 @@ const CruiseBooking = () => {
                   label="Expiry Date"
                   variant="outlined"
                   fullWidth
-                  placeholder="MM-YY"
+                  placeholder="YYYY-MM-DD"
                   onInput={formatDate}
                   value={formData.expiry_date}
                   onChange={(e) =>
@@ -567,62 +472,9 @@ const CruiseBooking = () => {
             </Button>
           </Grid>
         </Grid>
-
-        <Dialog
-          open={openPopup}
-          onClose={handleClosePopup}
-          PaperProps={{
-            style: {
-              width: "400px",
-            },
-          }}
-        >
-          <DialogTitle style={{ textAlign: "center" }}>
-            <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
-          </DialogTitle>
-          <DialogContent style={{ textAlign: "center", fontWeight: "bold" }}>
-            <p>{errorMessage}</p>
-          </DialogContent>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={handleClosePopup}
-              style={{ background: "var(--main-color)", color: "white" }}
-            >
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          PaperProps={{
-            style: {
-              width: "400px",
-            },
-          }}
-        >
-          <DialogTitle style={{ textAlign: "center" }}>
-            {dialogIcon}
-          </DialogTitle>
-          <DialogTitle style={{ textAlign: "center" }}>
-            {dialogMessage}
-          </DialogTitle>
-          <DialogContent></DialogContent>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={handleCloseDialog}
-              style={{ background: "var(--main-color)", color: "white" }}
-            >
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Grid>
 
       <Card />
     </div>
   );
-};
-
-export default CruiseBooking;
+}
