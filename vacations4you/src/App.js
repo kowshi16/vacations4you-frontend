@@ -6,8 +6,8 @@ import Cruise from "./app/Pages/Cruise";
 import Activity from "./app/Pages/Activity";
 import Package from "./app/Pages/Package";
 import SignupPage from "./app/features/auth/signupPage";
-import NavBar from "./app/components/Navbar";
 import CruiseBooking from "./app/components/CruiseBooking";
+import ActivityBooking from "./app/components/ActivityBooking";
 
 function App() {
   return (
@@ -17,12 +17,12 @@ function App() {
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/signup" element={<SignupPage />}></Route>
       </Routes>
-      <NavBar />
       <Routes>
         <Route exact path="/cruise" element={<Cruise />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/package" element={<Package />} />
         <Route path="/cruise-booking" element={<CruiseBooking />} />
+        <Route path="/activity-booking" element={<ActivityBooking />} />
       </Routes>
     </>
   );
