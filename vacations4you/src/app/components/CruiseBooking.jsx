@@ -260,7 +260,7 @@ const CruiseBooking = () => {
                     <TableCell
                       align="left"
                       colSpan={11}
-                      style={{ borderBottom: "1px solid blue", color: "blue" }}
+                      style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
                     >
                       <InventorySharpIcon />
                       Details
@@ -327,7 +327,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
@@ -419,7 +419,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>
@@ -493,7 +493,7 @@ const CruiseBooking = () => {
             <Grid
               container
               alignItems="center"
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
             >
               <Grid item sm={12}>
                 <label style={{ fontSize: 15 }}>

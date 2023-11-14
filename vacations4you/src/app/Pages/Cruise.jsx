@@ -505,7 +505,7 @@ function Cruise() {
             <Grid
               item
               xs={9}
-              style={{ borderBottom: "1px solid blue", color: "blue" }}
+              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
             >
               <label style={{ fontSize: 15 }}>
                 <FilterListSharpIcon /> Filters
