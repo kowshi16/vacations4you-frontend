@@ -39,9 +39,15 @@ function subtotal(items) {
 
 // export default function CruiseBooking() {
 const CruiseBooking = () => {
+
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
+
+  const storedUserData =
+    JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
+
 
   const invoiceSubtotal = subtotal(cartData);
 
@@ -71,6 +77,25 @@ const CruiseBooking = () => {
 
   const handleClosePopup = () => {
     setOpenPopup(false);
+  };
+
+  const clearFormData = () => {
+    setFormData({
+      customer_first_name: "",
+      customer_last_name: "",
+      customer_email: "",
+      customer_phone_no: "",
+      meal_preference: "",
+      number_of_participants: "",
+      card_number: "",
+      expiry_date: "",
+      cvv: "",
+      name_on_card: "",
+    });
+
+
+     setCartData([]);
+
   };
 
   const formatDate = (event) => {
@@ -105,8 +130,14 @@ const CruiseBooking = () => {
     setCartData(updatedCartData);
   }, []);
 
+  useEffect(() => {
+    const userDetails =
+      JSON.parse(localStorage.getItem("USER")) || [];
+    setUserData(userDetails);
+  }, []);
+
   const [formData, setFormData] = useState({
-    user_id: 123,
+    user_id: parseInt(userData.existingUser._id, 10),
     customer_first_name: "",
     customer_last_name: "",
     customer_email: "",
@@ -136,6 +167,8 @@ const CruiseBooking = () => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const visaCardRegex = /^\d{16}$/;
   const visaCardExpireDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+
+  console.log('formData', formData)
 
   // const handleCheckout
   const handleCheckout = () => {
@@ -197,7 +230,10 @@ const CruiseBooking = () => {
               <CheckCircleSharpIcon
                 style={{ color: "green", fontSize: "40px" }}
               />
+
+             
             );
+            clearFormData();
           } else if (res.data.length !== 0) {
             handleOpenDialog(
               "Something went wrong.",
@@ -216,6 +252,8 @@ const CruiseBooking = () => {
     saveCruiseBooking();
   }, [cruiseBookingData]);
 
+  
+  
   return (
     <div className="cruiseBookingCard">
       <Card />
