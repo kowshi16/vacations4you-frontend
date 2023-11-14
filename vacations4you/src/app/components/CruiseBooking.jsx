@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/cruiseBooking.css";
 import {
   Card,
@@ -37,7 +37,8 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-export default function CruiseBooking() {
+// export default function CruiseBooking() {
+const CruiseBooking = () => {
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
@@ -74,16 +75,17 @@ export default function CruiseBooking() {
 
   const formatDate = (event) => {
     const input = event.target;
-    const inputValue = input.value.replace(/[^0-9]/g, "");
+    let inputValue = input.value.replace(/[^0-9]/g, "");
 
-    if (inputValue.length <= 4) {
+    if (inputValue.length <= 2) {
       input.value = inputValue;
-    } else if (inputValue.length <= 6) {
-      input.value = inputValue.replace(/(\d{4})(\d{0,2})/, "$1-$2");
+    } else if (inputValue.length <= 4) {
+      const monthPart = inputValue.slice(0, 2);
+      const validMonth = Math.min(parseInt(monthPart, 10), 12);
+      inputValue = validMonth + inputValue.substring(2);
+      input.value = inputValue.replace(/(\d{2})(\d{0,2})/, "$1/$2");
     } else {
-      input.value = inputValue
-        .replace(/(\d{4})(\d{2})(\d{0,2})/, "$1-$2-$3")
-        .slice(0, 10);
+      input.value = inputValue.replace(/(\d{2})(\d{0,2})/, "$1/$2").slice(0, 5);
     }
   };
 
@@ -127,6 +129,8 @@ export default function CruiseBooking() {
   }));
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const visaCardRegex = /^4\d{15}$/;
+  const visaCardExpireDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
 
   // const handleCheckout
   const handleCheckout = () => {
@@ -140,7 +144,7 @@ export default function CruiseBooking() {
       setErrorMessage("Email is invalid");
       setOpenPopup(true);
     } else if (formData.customer_phone_no === "") {
-      setErrorMessage("Phone Number is required");
+      setErrorMessage("Phone number is required");
       setOpenPopup(true);
     } else if (formData.meal_preference === "") {
       setErrorMessage("Meal Preference is required");
@@ -148,17 +152,17 @@ export default function CruiseBooking() {
     } else if (formData.number_of_participants === "") {
       setErrorMessage("PAX is required");
       setOpenPopup(true);
-    } else if (formData.card_number === "") {
-      setErrorMessage("Card Number is required");
+    } else if (!visaCardRegex.test(formData.card_number)) {
+      setErrorMessage("Invalid card number");
       setOpenPopup(true);
-    } else if (formData.expiry_date === "") {
-      setErrorMessage("Expiry Date is required");
+    } else if (!visaCardExpireDateRegex.test(formData.expiry_date)) {
+      setErrorMessage("Expiry date is invalid");
       setOpenPopup(true);
     } else if (formData.cvv === "") {
       setErrorMessage("CVV Date is required");
       setOpenPopup(true);
     } else if (formData.name_on_card === "") {
-      setErrorMessage("Name on Card is required");
+      setErrorMessage("Name on card is required");
       setOpenPopup(true);
     } else {
       try {
@@ -174,39 +178,38 @@ export default function CruiseBooking() {
     }
   };
 
-  useEffect(() => {
-    saveCruiseBooking();
-  }, [cruiseBookingData]);
-
   // Save Cruise booking data
-  const saveCruiseBooking = () => {
-    saveCruiseBookingAPI(cruiseBookingData)
-      .then((res) => {
-        if (res.data.length !== 0 && res.status === 200) {
-          handleOpenDialog(
-            <>
-              Cruise Booking Success! <br />
-              Your Booking No: <strong>{res.data._id}</strong>
-            </>,
-            <CheckCircleSharpIcon
-              style={{ color: "green", fontSize: "40px" }}
-            />
-          );
-        } else if (res.data.length !== 0) {
+  useEffect(() => {
+    const saveCruiseBooking = () => {
+      saveCruiseBookingAPI(cruiseBookingData)
+        .then((res) => {
+          if (res.data.length !== 0 && res.status === 200) {
+            handleOpenDialog(
+              <>
+                Cruise Booking Success! <br />
+                Your Booking No: <strong>{res.data._id}</strong>
+              </>,
+              <CheckCircleSharpIcon
+                style={{ color: "green", fontSize: "40px" }}
+              />
+            );
+          } else if (res.data.length !== 0) {
+            handleOpenDialog(
+              "Something went wrong.",
+              <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error during cruise booking API request:", error);
           handleOpenDialog(
             "Something went wrong.",
             <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
           );
-        }
-      })
-      .catch((error) => {
-        console.error("Error during cruise booking API request:", error);
-        handleOpenDialog(
-          "Something went wrong.",
-          <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
-        );
-      });
-  };
+        });
+    };
+    saveCruiseBooking();
+  }, [cruiseBookingData]);
 
   return (
     <div className="cruiseBookingCard">
@@ -494,7 +497,7 @@ export default function CruiseBooking() {
                   label="Expiry Date"
                   variant="outlined"
                   fullWidth
-                  placeholder="YYYY-MM-DD"
+                  placeholder="MM-YY"
                   onInput={formatDate}
                   value={formData.expiry_date}
                   onChange={(e) =>
@@ -615,4 +618,6 @@ export default function CruiseBooking() {
       <Card />
     </div>
   );
-}
+};
+
+export default CruiseBooking;
