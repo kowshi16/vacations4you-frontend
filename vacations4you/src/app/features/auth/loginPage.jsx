@@ -47,6 +47,7 @@ const LoginPage = () => {
             .then((res) => {
                 console.log("Login :", res);
                 setShowAlert({ ...showAlert, status: true, label: "Log in successfull !", type: "success" });
+                localStorage.setItem("USER", JSON.stringify(res?.data));
                 setTimeout(() => {
                     window.location.replace("/cruise");
                 }, 3000);
@@ -179,18 +180,6 @@ const LoginPage = () => {
                                 </Form>
                             )}
                         </Formik>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="/signup" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
             </Grid>
