@@ -99,7 +99,7 @@ const PackageDetails = () => {
 
                 <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
                     <h5 className="card-title mb-4">
-                        <b>Activity Details</b>
+                        <b>Package Details</b>
                     </h5>
                     <div style={{ height: 400, width: "100%" }}>
                         <DataGrid
