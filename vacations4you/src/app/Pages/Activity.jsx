@@ -10,7 +10,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  // Slider,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -305,9 +304,6 @@ function Activity() {
               </Grid>
 
               <Grid container style={{ marginTop: 20 }}>
-                {/* <Grid item xs={12} style={{ marginLeft: 16 }}>
-                <label className="title">Price</label>
-              </Grid> */}
 
                 <Grid item xs={10}>
                   <FormLabel
@@ -322,9 +318,11 @@ function Activity() {
                     value={selectedPriceRange}
                     onChange={(event) => {
                       setSelectedPriceRange(event.target.value);
-                      setPayload({...payload, 
-                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "" , 
-                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : "" })
+                      setPayload({
+                        ...payload,
+                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "",
+                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : ""
+                      })
                     }}
                   >
                     <FormControlLabel value="" control={<Radio />} label="All" />
@@ -361,13 +359,6 @@ function Activity() {
                 </Grid>
 
                 <Grid item xs={10}>
-                  {/* <Slider
-                  defaultValue={50}
-                  aria-label="Default"
-                  valueLabelDis
-                  play="auto"
-                /> */}
-
                   <FormLabel
                     id="demo-controlled-radio-buttons-group"
                     style={{ marginLeft: 16, marginTop: 10 }}
@@ -456,7 +447,7 @@ function Activity() {
                       <h5 className="activity-name">{activity.title}</h5>
 
                       <Grid item xs={12}>
-                      <RatingStars rating={activity.rating} />
+                        <RatingStars rating={activity.rating} />
                       </Grid>
 
                       <Grid item xs={12}>
@@ -468,7 +459,7 @@ function Activity() {
                         <strong>Type - </strong>
                         {activity.activity_type}
                       </Grid>
-                      
+
                       <Grid item xs={12}>
                         <strong>Date - </strong>
                         {moment(activity.date).format("YYYY-MM-DD")}
