@@ -49,7 +49,15 @@ const LoginPage = () => {
                 setShowAlert({ ...showAlert, status: true, label: "Log in successfull !", type: "success" });
                 localStorage.setItem("USER", JSON.stringify(res?.data));
                 setTimeout(() => {
-                    window.location.replace("/cruise");
+                    if (res?.data.existingUser.user_role === "Admin") {
+                        window.location.replace("/adminDashboard")
+                    } 
+                    else if (res?.data.existingUser.user_role === "Backoffice Staff") {
+                        window.location.replace("/addNewData")
+                    }
+                    else if (res?.data.existingUser.user_role === "Agent") {
+                        window.location.replace("/cruise")
+                    }
                 }, 3000);
 
             })

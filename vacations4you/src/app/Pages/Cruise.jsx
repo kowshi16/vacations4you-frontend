@@ -24,6 +24,7 @@ import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FilterListSharpIcon from "@mui/icons-material/FilterListSharp";
 import NavBar from "../components/Navbar";
+import Typography from "@mui/material/Typography";
 
 function Cruise() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -45,6 +46,9 @@ function Cruise() {
   const [duration, setDuration] = useState("");
   const [cruise_provider, setCruiseProvider] = useState("");
   const [price, setValuePrice] = useState("");
+
+  const storedUserData = JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
 
   const uniqueCruiseDeparture = new Set();
   const uniqueCruiseArrival = new Set();
@@ -303,6 +307,10 @@ function Cruise() {
     setDepartureDate("");
     setArrivalDate("");
 
+    setValuePrice("");
+    setDuration("");
+    setCruiseProvider("");
+
     fetchAllCruise();
   };
 
@@ -312,6 +320,7 @@ function Cruise() {
 
       <div className="cruise-app">
         <div>{/* searching criteria */}</div>
+
         <CruiseCart
           visibility={cartsVisibility}
           cruises={cruisesInCart}
@@ -319,19 +328,29 @@ function Cruise() {
           onQuantityChange={onQuantityChange}
           onCruiseRemove={onCruiseRemove}
         />
-        <div className="navbar-cart">
-          <button
-            className="button cruise-cart-btn"
-            onClick={() => setCartVisible(true)}
-          >
-            <FaShoppingCart size={24} />
-            {cruisesInCart.length > 0 && (
-              <span className="cruise-count">{cruisesInCart.length}</span>
-            )}
-          </button>
+
+        <div className="navbar">
+          <div className="navbar-left ml-[7rem]">
+            <Typography variant="h5" noWrap component="div">
+              <b>Welcome {userData.existingUser.name} 👋 </b> ({userData.existingUser.user_role})
+            </Typography>
+          </div>
+          <div className="navbar-right">
+            <div className="navbar-cart">
+              <button
+                className="button cruise-cart-btn"
+                onClick={() => setCartVisible(true)}
+              >
+                <FaShoppingCart size={24} />
+                {cruisesInCart.length > 0 && (
+                  <span className="cruise-count">{cruisesInCart.length}</span>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
 
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
           <Card style={{ padding: 20 }} className="cruise-card">
             <Grid
               container
@@ -502,19 +521,19 @@ function Cruise() {
           </Card>
         </Grid>
 
-      <Grid container style={{ marginTop: 40 }}>
-        <Grid item xs={3}>
-          <Card className="second-filter">
-            <Grid
-              item
-              xs={9}
-              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
-            >
-              <label style={{ fontSize: 15 }}>
-                {" "}
-                <FilterListSharpIcon fontSize="small" /> Filters
-              </label>
-            </Grid>
+        <Grid container style={{ marginTop: 40 }}>
+          <Grid item xs={3}>
+            <Card className="second-filter">
+              <Grid
+                item
+                xs={9}
+                style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
+              >
+                <label style={{ fontSize: 15 }}>
+                  {" "}
+                  <FilterListSharpIcon fontSize="small" /> Filters
+                </label>
+              </Grid>
 
               <Grid container style={{ marginTop: 20 }}>
                 <Grid item xs={10}>

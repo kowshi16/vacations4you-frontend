@@ -26,6 +26,7 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FilterListSharpIcon from "@mui/icons-material/FilterListSharp";
 import RatingStars from "../components/RatingStars";
 import NavBar from "../components/Navbar";
+import Typography from "@mui/material/Typography";
 
 function Activity() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -44,6 +45,8 @@ function Activity() {
   const [selectedPriceRange, setSelectedPriceRange] = useState('');
   const [destinationOptions, setDestinationOptions] = useState([]);
   const [activityTypeOptions, setActivityTypeOptions] = useState([]);
+  const storedUserData = JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
 
   useEffect(() => {
     localStorage.setItem("shopping-cart-activity", JSON.stringify(activitiesInCart));
@@ -168,19 +171,29 @@ function Activity() {
           onQuantityChange={onQuantityChange}
           onActivityRemove={onActivityRemove}
         />
-        <div className="navbar-cart">
-          <button
-            className="button activity-cart-btn"
-            onClick={() => setCartVisible(true)}
-          >
-            <FaShoppingCart size={24} />
-            {activitiesInCart.length > 0 && (
-              <span className="activity-count">{activitiesInCart.length}</span>
-            )}
-          </button>
+
+        <div className="navbar">
+          <div className="navbar-left ml-[7rem]">
+            <Typography variant="h5" noWrap component="div">
+              <b>Welcome {userData.existingUser.name} 👋 </b> ({userData.existingUser.user_role})
+            </Typography>
+          </div>
+          <div className="navbar-right">
+            <div className="navbar-cart">
+              <button
+                className="button activity-cart-btn"
+                onClick={() => setCartVisible(true)}
+              >
+                <FaShoppingCart size={24} />
+                {activitiesInCart.length > 0 && (
+                  <span className="activity-count">{activitiesInCart.length}</span>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
 
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
           <Card style={{ padding: 20 }} className="activity-card">
             <Grid
               container
@@ -322,9 +335,11 @@ function Activity() {
                     value={selectedPriceRange}
                     onChange={(event) => {
                       setSelectedPriceRange(event.target.value);
-                      setPayload({...payload, 
-                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "" , 
-                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : "" })
+                      setPayload({
+                        ...payload,
+                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "",
+                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : ""
+                      })
                     }}
                   >
                     <FormControlLabel value="" control={<Radio />} label="All" />
@@ -456,7 +471,7 @@ function Activity() {
                       <h5 className="activity-name">{activity.title}</h5>
 
                       <Grid item xs={12}>
-                      <RatingStars rating={activity.rating} />
+                        <RatingStars rating={activity.rating} />
                       </Grid>
 
                       <Grid item xs={12}>
@@ -468,7 +483,7 @@ function Activity() {
                         <strong>Type - </strong>
                         {activity.activity_type}
                       </Grid>
-                      
+
                       <Grid item xs={12}>
                         <strong>Date - </strong>
                         {moment(activity.date).format("YYYY-MM-DD")}

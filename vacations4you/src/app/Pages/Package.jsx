@@ -23,6 +23,7 @@ import FilterListSharpIcon from "@mui/icons-material/FilterListSharp";
 import RatingStars from "../components/RatingStars";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
+import Typography from "@mui/material/Typography";
 
 function Package() {
   const [cartsVisibility, setCartVisible] = useState(false);
@@ -42,6 +43,8 @@ function Package() {
   const [selectedPriceRange, setSelectedPriceRange] = useState('');
   const [destinationOptions, setDestinationOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
+  const storedUserData = JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
 
   useEffect(() => {
     localStorage.setItem("shopping-cart-package", JSON.stringify(packagesInCart));
@@ -170,19 +173,28 @@ function Package() {
           onQuantityChange={onQuantityChange}
           onPackageRemove={onPackageRemove}
         />
-        <div className="navbar-cart">
-          <button
-            className="button package-cart-btn"
-            onClick={() => setCartVisible(true)}
-          >
-            <FaShoppingCart size={24} />
-            {packagesInCart.length > 0 && (
-              <span className="package-count">{packagesInCart.length}</span>
-            )}
-          </button>
+        <div className="navbar">
+          <div className="navbar-left ml-[7rem]">
+            <Typography variant="h5" noWrap component="div">
+              <b>Welcome {userData.existingUser.name} 👋 </b> ({userData.existingUser.user_role})
+            </Typography>
+          </div>
+          <div className="navbar-right">
+            <div className="navbar-cart">
+              <button
+                className="button package-cart-btn"
+                onClick={() => setCartVisible(true)}
+              >
+                <FaShoppingCart size={24} />
+                {packagesInCart.length > 0 && (
+                  <span className="package-count">{packagesInCart.length}</span>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
 
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+        <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
           <Card style={{ padding: 20 }} className="package-card">
             <Grid
               container
@@ -366,9 +378,11 @@ function Package() {
                     value={selectedPriceRange}
                     onChange={(event) => {
                       setSelectedPriceRange(event.target.value);
-                      setPayload({...payload, 
-                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "" , 
-                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : "" })
+                      setPayload({
+                        ...payload,
+                        minPrice: event.target.value.split("-")[0] ? event.target.value.split("-")[0] : "",
+                        maxPrice: event.target.value.split("-")[1] ? event.target.value.split("-")[1] : ""
+                      })
                     }}
                   >
                     <FormControlLabel value="" control={<Radio />} label="All" />
@@ -500,7 +514,7 @@ function Package() {
                       <h5 className="package-name">{packagee.title}</h5>
 
                       <Grid item xs={12}>
-                      <RatingStars rating={packagee.rating} />
+                        <RatingStars rating={packagee.rating} />
                       </Grid>
 
                       <Grid item xs={12}>
@@ -517,7 +531,7 @@ function Package() {
                         <strong>Duration - </strong>
                         {packagee.duration}
                       </Grid>
-                      
+
                       <Grid item xs={12}>
                         <strong>No. of participants - </strong>
                         {packagee.number_of_participants}

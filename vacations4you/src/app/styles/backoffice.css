@@ -1,0 +1,10 @@
+:root {
+    --main-color: #060b26;
+    --text-color: #232323;
+    --secondary-color: #112154;
+}
+
+.backoffice-app {
+    display: flex;
+    flex-direction: column;
+}
