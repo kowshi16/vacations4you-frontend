@@ -8,6 +8,7 @@ import Package from "./app/Pages/Package";
 import SignupPage from "./app/features/auth/signupPage";
 import CruiseBooking from "./app/components/CruiseBooking";
 import ActivityBooking from "./app/components/ActivityBooking";
+import PackageBooking from "./app/components/PackageBooking";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/package" element={<Package />} />
         <Route path="/cruise-booking" element={<CruiseBooking />} />
         <Route path="/activity-booking" element={<ActivityBooking />} />
+        <Route path="/package-booking" element={<PackageBooking />} />
       </Routes>
     </>
   );

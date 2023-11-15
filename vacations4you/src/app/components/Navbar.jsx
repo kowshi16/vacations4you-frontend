@@ -15,6 +15,7 @@ function NavBar() {
     localStorage.removeItem("USER");
     localStorage.removeItem("shopping-cart");
     localStorage.removeItem("shopping-cart-activity");
+    localStorage.removeItem("shopping-cart-package");
     window.location.replace("/login");
   };
 
