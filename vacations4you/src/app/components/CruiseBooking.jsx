@@ -110,6 +110,11 @@ const CruiseBooking = () => {
     setCartData(updatedCartData);
   }, []);
 
+  useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("USER")) || [];
+    setUserData(userDetails);
+  }, []);
+
   const [formData, setFormData] = useState({
     user_id: userData.existingUser._id,
     customer_first_name: "",
