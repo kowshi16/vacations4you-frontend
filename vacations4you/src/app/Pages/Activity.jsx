@@ -101,7 +101,7 @@ function Activity() {
   };
 
   const handleClearClick = () => {
-    setPayload({ ...payload, destination: "", date: null, activity_type: "", rating: "", price: "" });
+    setPayload({ ...payload, destination: "", date: null, activity_type: "", rating: "", minPrice: "", maxPrice: "" });
     fetchAllActivity();
   };
 

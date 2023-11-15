@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/cruiseBooking.css";
 import {
   Card,
@@ -30,6 +30,7 @@ import InventorySharpIcon from "@mui/icons-material/InventorySharp";
 import { saveCruiseBookingAPI } from "../../api/cruise";
 import ErrorSharpIcon from "@mui/icons-material/ErrorSharp";
 import CheckCircleSharpIcon from "@mui/icons-material/CheckCircleSharp";
+import NavBar from "./Navbar";
 
 const ccyFormat = (num) => `${num.toFixed(2)}`;
 
@@ -66,7 +67,9 @@ const CruiseBooking = () => {
   };
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    //setOpenDialog(false);
+    localStorage.removeItem("shopping-cart");
+    window.location.replace("/cruise");
   };
 
   const handleClosePopup = () => {
@@ -183,6 +186,11 @@ const CruiseBooking = () => {
     }
   };
 
+  // Handle Back Button
+  const handleBack = () => {
+    window.location.replace("/cruise");
+  };
+
   // Save Cruise booking data
   useEffect(() => {
     const saveCruiseBooking = () => {
@@ -217,411 +225,424 @@ const CruiseBooking = () => {
   }, [cruiseBookingData]);
 
   return (
-    <div className="cruiseBookingCard">
-      <Card />
+    <React.Fragment>
+      <NavBar />
 
-      <Grid container justifyContent="center">
-        <Grid item sm={12} style={{ marginLeft: 50, marginTop: 20 }}>
-          <h4>Checkout</h4>
-        </Grid>
+      <div className="cruiseBookingCard">
+        <Card />
 
-        <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
-          <div style={{ overflowY: "auto", maxHeight: "400px" }}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 700 }} aria-label="spanning table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      align="left"
-                      colSpan={11}
-                      style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
-                    >
-                      <InventorySharpIcon />
-                      Details
-                    </TableCell>
-                  </TableRow>
+        <Grid container justifyContent="center">
+          <Grid item sm={12} style={{ marginLeft: 50, marginTop: 20 }}>
+            <h4>Checkout</h4>
+          </Grid>
 
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Provider</TableCell>
-                    <TableCell align="center">Cabin</TableCell>
-                    <TableCell align="center">Deck</TableCell>
-                    <TableCell align="center">Departure</TableCell>
-                    <TableCell align="center">Arrival</TableCell>
-                    <TableCell align="center">Duration</TableCell>
-                    <TableCell align="center" style={{ width: "110px" }}>
-                      Arrival Date
-                    </TableCell>
-                    <TableCell align="center" style={{ width: "130px" }}>
-                      Departure Date
-                    </TableCell>
-                    <TableCell align="center">Price</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {cartData.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.cruise_provider}</TableCell>
-                      <TableCell align="center">{row.cabin}</TableCell>
-                      <TableCell align="center">{row.deck}</TableCell>
-                      <TableCell align="center">{row.departure}</TableCell>
-                      <TableCell align="center">{row.arrival}</TableCell>
-                      <TableCell align="center">{row.duration}</TableCell>
-                      <TableCell align="center" style={{ width: "110px" }}>
-                        {" "}
-                        {moment(row.arrival_date).format("YYYY-MM-DD")}
-                      </TableCell>
-                      <TableCell align="right">
-                        {moment(row.departure_date).format("YYYY-MM-DD")}
-                      </TableCell>
-
-                      <TableCell align="right">
-                        {ccyFormat(row.price)}
+          <Grid item sm={12} style={{ margin: "30px 100px 0 100px" }}>
+            <div style={{ overflowY: "auto", maxHeight: "400px" }}>
+              <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 700 }} aria-label="spanning table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        align="left"
+                        colSpan={11}
+                        style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
+                      >
+                        <InventorySharpIcon />
+                        Details
                       </TableCell>
                     </TableRow>
-                  ))}
-                  <TableRow>
-                    <TableCell rowSpan={10} />
-                    <TableCell align="right" colSpan={8}>
-                      Total
-                    </TableCell>
-                    <TableCell align="right">
-                      {ccyFormat(invoiceSubtotal)}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </Grid>
 
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
-          <Card style={{ padding: 20, marginTop: 20 }}>
-            <Grid
-              container
-              alignItems="center"
-              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
-            >
-              <Grid item sm={12}>
-                <label style={{ fontSize: 15 }}>
-                  {" "}
-                  <PhoneForwardedSharpIcon fontSize="small" /> Contact details
-                </label>
-              </Grid>
-            </Grid>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Provider</TableCell>
+                      <TableCell align="center">Cabin</TableCell>
+                      <TableCell align="center">Deck</TableCell>
+                      <TableCell align="center">Departure</TableCell>
+                      <TableCell align="center">Arrival</TableCell>
+                      <TableCell align="center">Duration</TableCell>
+                      <TableCell align="center" style={{ width: "110px" }}>
+                        Arrival Date
+                      </TableCell>
+                      <TableCell align="center" style={{ width: "130px" }}>
+                        Departure Date
+                      </TableCell>
+                      <TableCell align="center">Price</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {cartData.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.cruise_provider}</TableCell>
+                        <TableCell align="center">{row.cabin}</TableCell>
+                        <TableCell align="center">{row.deck}</TableCell>
+                        <TableCell align="center">{row.departure}</TableCell>
+                        <TableCell align="center">{row.arrival}</TableCell>
+                        <TableCell align="center">{row.duration}</TableCell>
+                        <TableCell align="center" style={{ width: "110px" }}>
+                          {" "}
+                          {moment(row.arrival_date).format("YYYY-MM-DD")}
+                        </TableCell>
+                        <TableCell align="right">
+                          {moment(row.departure_date).format("YYYY-MM-DD")}
+                        </TableCell>
 
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-            >
-              <Grid item sm={6} style={{ marginTop: 10 }}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  label="First Name"
-                  variant="outlined"
-                  onInput={onlyLetters}
-                  value={formData.customer_first_name}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      customer_first_name: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-
-              <Grid item sm={6} style={{ marginTop: 10 }}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  label="Last Name"
-                  variant="outlined"
-                  onInput={onlyLetters}
-                  value={formData.customer_last_name}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      customer_last_name: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-
-              <Grid item sm={6} style={{ marginTop: 10 }}>
-                <TextField
-                  label="Email"
-                  type="email"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.customer_email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, customer_email: e.target.value })
-                  }
-                />
-              </Grid>
-
-              <Grid item sm={6} style={{ marginTop: 10 }}>
-                <TextField
-                  label="Phone Number"
-                  type="tel"
-                  variant="outlined"
-                  fullWidth
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 10);
-                  }}
-                  value={formData.customer_phone_no}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      customer_phone_no: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
-          <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
-            <Grid
-              container
-              alignItems="center"
-              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
-            >
-              <Grid item sm={12}>
-                <label style={{ fontSize: 15 }}>
-                  {" "}
-                  <FastfoodSharpIcon fontSize="small" /> Meal Preferences & PAX
-                  Count
-                </label>
-              </Grid>
-            </Grid>
-
-            <Grid
-              container
-              justifyContent="center"
-              alignItems="center"
-              spacing={2}
-            >
-              <Grid item sm={6} style={{ marginTop: 10 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Meal Preferences
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Meal Preferences"
-                    value={formData.meal_preference}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        meal_preference: e.target.value,
-                      })
-                    }
-                  >
-                    <MenuItem value="RoomService">Room Service</MenuItem>
-                    <MenuItem value="Buffet">Buffet</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item sm={2} style={{ marginTop: 10 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">PAX</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="PAX"
-                    value={formData.number_of_participants}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        number_of_participants: e.target.value,
-                      })
-                    }
-                  >
-                    {paxOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
+                        <TableCell align="right">
+                          {ccyFormat(row.price)}
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item sm={4}></Grid>
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
-          <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
-            <Grid
-              container
-              alignItems="center"
-              style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
-            >
-              <Grid item sm={12}>
-                <label style={{ fontSize: 15 }}>
-                  {" "}
-                  <MonetizationOnSharpIcon fontSize="small" /> Payment Method
-                </label>
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} style={{ marginTop: 1 }}>
-              <Grid item sm={6}>
-                <TextField
-                  label="Card Number"
-                  variant="outlined"
-                  fullWidth
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 16);
-                  }}
-                  value={formData.card_number}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      card_number: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <TextField
-                  label="Expiry Date"
-                  variant="outlined"
-                  fullWidth
-                  placeholder="MM-YY"
-                  onInput={formatDate}
-                  value={formData.expiry_date}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      expiry_date: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <TextField
-                  label="CVV"
-                  variant="outlined"
-                  fullWidth
-                  onInput={(e) => {
-                    e.target.value = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 3);
-                  }}
-                  value={formData.cvv}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      cvv: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <TextField
-                  label="Name on Card"
-                  variant="outlined"
-                  fullWidth
-                  onInput={onlyLetters}
-                  value={formData.name_on_card}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      name_on_card: e.target.value,
-                    })
-                  }
-                />
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          sx={{ marginTop: 5, marginBottom: 5 }}
-        >
-          <Grid item sm={3}>
-            <Button
-              fullWidth
-              style={{ background: "var(--main-color)", color: "#fff" }}
-              onClick={handleCheckout}
-            >
-              Checkout
-            </Button>
+                    <TableRow>
+                      <TableCell rowSpan={10} />
+                      <TableCell align="right" colSpan={8}>
+                        Total
+                      </TableCell>
+                      <TableCell align="right">
+                        {ccyFormat(invoiceSubtotal)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
           </Grid>
+
+          <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+            <Card style={{ padding: 20, marginTop: 20 }}>
+              <Grid
+                container
+                alignItems="center"
+                style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
+              >
+                <Grid item sm={12}>
+                  <label style={{ fontSize: 15 }}>
+                    {" "}
+                    <PhoneForwardedSharpIcon fontSize="small" /> Contact details
+                  </label>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+              >
+                <Grid item sm={6} style={{ marginTop: 10 }}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="First Name"
+                    variant="outlined"
+                    onInput={onlyLetters}
+                    value={formData.customer_first_name}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        customer_first_name: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+
+                <Grid item sm={6} style={{ marginTop: 10 }}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Last Name"
+                    variant="outlined"
+                    onInput={onlyLetters}
+                    value={formData.customer_last_name}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        customer_last_name: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+
+                <Grid item sm={6} style={{ marginTop: 10 }}>
+                  <TextField
+                    label="Email"
+                    type="email"
+                    variant="outlined"
+                    fullWidth
+                    value={formData.customer_email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customer_email: e.target.value })
+                    }
+                  />
+                </Grid>
+
+                <Grid item sm={6} style={{ marginTop: 10 }}>
+                  <TextField
+                    label="Phone Number"
+                    type="tel"
+                    variant="outlined"
+                    fullWidth
+                    onInput={(e) => {
+                      e.target.value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                    }}
+                    value={formData.customer_phone_no}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        customer_phone_no: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+
+          <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+            <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
+              <Grid
+                container
+                alignItems="center"
+                style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
+              >
+                <Grid item sm={12}>
+                  <label style={{ fontSize: 15 }}>
+                    {" "}
+                    <FastfoodSharpIcon fontSize="small" /> Meal Preferences & PAX
+                    Count
+                  </label>
+                </Grid>
+              </Grid>
+
+              <Grid
+                container
+                justifyContent="center"
+                alignItems="center"
+                spacing={2}
+              >
+                <Grid item sm={6} style={{ marginTop: 10 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Meal Preferences
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Meal Preferences"
+                      value={formData.meal_preference}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          meal_preference: e.target.value,
+                        })
+                      }
+                    >
+                      <MenuItem value="RoomService">Room Service</MenuItem>
+                      <MenuItem value="Buffet">Buffet</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item sm={2} style={{ marginTop: 10 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">PAX</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="PAX"
+                      value={formData.number_of_participants}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          number_of_participants: e.target.value,
+                        })
+                      }
+                    >
+                      {paxOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item sm={4}></Grid>
+              </Grid>
+            </Card>
+          </Grid>
+
+          <Grid item sm={12} style={{ margin: "10px 100px 0 100px" }}>
+            <Card sm={12} style={{ padding: 20, marginTop: 20 }}>
+              <Grid
+                container
+                alignItems="center"
+                style={{ borderBottom: "1px solid #1976D2", color: "#1976D2" }}
+              >
+                <Grid item sm={12}>
+                  <label style={{ fontSize: 15 }}>
+                    {" "}
+                    <MonetizationOnSharpIcon fontSize="small" /> Payment Method
+                  </label>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2} style={{ marginTop: 1 }}>
+                <Grid item sm={6}>
+                  <TextField
+                    label="Card Number"
+                    variant="outlined"
+                    fullWidth
+                    onInput={(e) => {
+                      e.target.value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 16);
+                    }}
+                    value={formData.card_number}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        card_number: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <TextField
+                    label="Expiry Date"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="MM-YY"
+                    onInput={formatDate}
+                    value={formData.expiry_date}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expiry_date: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <TextField
+                    label="CVV"
+                    variant="outlined"
+                    fullWidth
+                    onInput={(e) => {
+                      e.target.value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 3);
+                    }}
+                    value={formData.cvv}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        cvv: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+                <Grid item sm={6}>
+                  <TextField
+                    label="Name on Card"
+                    variant="outlined"
+                    fullWidth
+                    onInput={onlyLetters}
+                    value={formData.name_on_card}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        name_on_card: e.target.value,
+                      })
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            sx={{ marginTop: 5, marginBottom: 5 }}
+          >
+            <Grid item sm={2}>
+              <Button
+                fullWidth
+                style={{ background: "#fff", border: "1px solid var(--main-color)", color: "var(--main-color)" }}
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+            </Grid>
+            <Grid item sm={2}>
+              <Button
+                fullWidth
+                style={{ background: "var(--main-color)", color: "#fff", marginLeft: "1rem" }}
+                onClick={handleCheckout}
+              >
+                Checkout
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Dialog
+            open={openPopup}
+            onClose={handleClosePopup}
+            PaperProps={{
+              style: {
+                width: "400px",
+              },
+            }}
+          >
+            <DialogTitle style={{ textAlign: "center" }}>
+              <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
+            </DialogTitle>
+            <DialogContent style={{ textAlign: "center", fontWeight: "bold" }}>
+              <p>{errorMessage}</p>
+            </DialogContent>
+            <DialogActions style={{ justifyContent: "center" }}>
+              <Button
+                onClick={handleClosePopup}
+                style={{ background: "var(--main-color)", color: "white" }}
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            PaperProps={{
+              style: {
+                width: "400px",
+              },
+            }}
+          >
+            <DialogTitle style={{ textAlign: "center" }}>
+              {dialogIcon}
+            </DialogTitle>
+            <DialogTitle style={{ textAlign: "center" }}>
+              {dialogMessage}
+            </DialogTitle>
+            <DialogContent></DialogContent>
+            <DialogActions style={{ justifyContent: "center" }}>
+              <Button
+                onClick={handleCloseDialog}
+                style={{ background: "var(--main-color)", color: "white" }}
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
 
-        <Dialog
-          open={openPopup}
-          onClose={handleClosePopup}
-          PaperProps={{
-            style: {
-              width: "400px",
-            },
-          }}
-        >
-          <DialogTitle style={{ textAlign: "center" }}>
-            <ErrorSharpIcon style={{ color: "red", fontSize: "40px" }} />
-          </DialogTitle>
-          <DialogContent style={{ textAlign: "center", fontWeight: "bold" }}>
-            <p>{errorMessage}</p>
-          </DialogContent>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={handleClosePopup}
-              style={{ background: "var(--main-color)", color: "white" }}
-            >
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
-          PaperProps={{
-            style: {
-              width: "400px",
-            },
-          }}
-        >
-          <DialogTitle style={{ textAlign: "center" }}>
-            {dialogIcon}
-          </DialogTitle>
-          <DialogTitle style={{ textAlign: "center" }}>
-            {dialogMessage}
-          </DialogTitle>
-          <DialogContent></DialogContent>
-          <DialogActions style={{ justifyContent: "center" }}>
-            <Button
-              onClick={handleCloseDialog}
-              style={{ background: "var(--main-color)", color: "white" }}
-            >
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
-
-      <Card />
-    </div>
+        <Card />
+      </div>
+    </React.Fragment>
   );
 };
 
