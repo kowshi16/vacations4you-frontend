@@ -398,7 +398,6 @@ export default function ActivityBooking() {
                                     <label style={{ fontSize: 15 }}>
                                         {" "}
                                         <EmojiPeopleIcon fontSize="small" /> No. of participants & Age
-                                        Count
                                     </label>
                                 </Grid>
                             </Grid>

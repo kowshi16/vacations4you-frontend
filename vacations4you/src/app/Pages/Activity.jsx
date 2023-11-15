@@ -19,7 +19,7 @@ import {
 import { DatePicker } from 'rsuite';
 import "rsuite/dist/rsuite.min.css";
 import moment from "moment";
-import { getActivityBySearchCriteriaAPI, getAllActivityAPI } from "../../api/activity";
+import { getActivityBySearchCriteriaAPI, getActivityTypeAPI, getAllActivityAPI, getDestinationsAPI } from "../../api/activity";
 import { Image } from "../features/landingPage/landingPageComponents/customComponents/Image";
 import noDataFoundImg from "../../images/Common/noDataFound.png";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
@@ -42,13 +42,34 @@ function Activity() {
   });
   const [activityDetails, setActivityDetails] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState('');
-
-  console.log("selectedPriceValue >>>>>>>>>>>", selectedPriceRange);
-  console.log("payload >>>>>>>>>>>", payload);
+  const [destinationOptions, setDestinationOptions] = useState([]);
+  const [activityTypeOptions, setActivityTypeOptions] = useState([]);
 
   useEffect(() => {
     localStorage.setItem("shopping-cart-activity", JSON.stringify(activitiesInCart));
   }, [activitiesInCart]);
+
+  useEffect(() => {
+    getDestinationsAPI()
+      .then((res) => {
+        console.log("Res :", res);
+        setDestinationOptions(res?.data?.destinations);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    getActivityTypeAPI()
+      .then((res) => {
+        console.log("Res :", res);
+        setActivityTypeOptions(res?.data?.activityType);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const onQuantityChange = (activityId, count) => {
     setActivity((oldState) => {
@@ -205,9 +226,14 @@ function Activity() {
                     }}
                     style={{ backgroundColor: "#fff" }}
                   >
-                    <MenuItem value="Colombo">Colombo</MenuItem>
-                    <MenuItem value="Singapore">Singapore</MenuItem>
-                    <MenuItem value="Maldives">Maldives</MenuItem>
+                    <MenuItem value="" disabled>
+                      Select an option
+                    </MenuItem>
+                    {destinationOptions.map(destination => (
+                      <MenuItem key={destination} value={destination}>
+                        {destination}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -225,9 +251,14 @@ function Activity() {
                     }}
                     style={{ backgroundColor: "#fff" }}
                   >
-                    <MenuItem value="Leisure">Leisure</MenuItem>
-                    <MenuItem value="Education">Education</MenuItem>
-                    <MenuItem value="Wildlife">Wildlife</MenuItem>
+                    <MenuItem value="" disabled>
+                      Select an option
+                    </MenuItem>
+                    {activityTypeOptions.map(activityType => (
+                      <MenuItem key={activityType} value={activityType}>
+                        {activityType}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
