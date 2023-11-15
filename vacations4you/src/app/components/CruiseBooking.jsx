@@ -38,11 +38,13 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-// export default function CruiseBooking() {
 const CruiseBooking = () => {
   const storedCartData =
     JSON.parse(localStorage.getItem("shopping-cart")) || [];
   const [cartData, setCartData] = useState(storedCartData);
+
+  const storedUserData = JSON.parse(localStorage.getItem("USER")) || [];
+  const [userData, setUserData] = useState(storedUserData);
 
   const invoiceSubtotal = subtotal(cartData);
 
@@ -109,7 +111,7 @@ const CruiseBooking = () => {
   }, []);
 
   const [formData, setFormData] = useState({
-    user_id: 123,
+    user_id: userData.existingUser._id,
     customer_first_name: "",
     customer_last_name: "",
     customer_email: "",
